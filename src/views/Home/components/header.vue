@@ -15,8 +15,8 @@ const elasideheight = 0.15*windowHeight;
               </el-menu-item>
               <!-- 右侧菜单 -->
               <div class="flex-grow" ></div>
-              <router-link to="/data"><el-menu-item index="1">查看数据</el-menu-item></router-link>
-              <router-link to="/person"><el-menu-item index="2">个人中心</el-menu-item></router-link>
+              <router-link to="/data"><el-menu-item index="1"><div class="right-menu">查看数据</div></el-menu-item></router-link>
+              <router-link to="/person"><el-menu-item index="2"><div class="right-menu">个人中心</div></el-menu-item></router-link>
             </el-menu>
         </el-header>
 </template>
@@ -29,7 +29,9 @@ const elasideheight = 0.15*windowHeight;
     font-size: 24px;
 }
 .el-menu-item{
-    width: 250px;
+  width: 250px;
 }
-
+.right-menu{
+  margin: 0px auto;
+}
 </style>
