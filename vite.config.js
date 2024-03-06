@@ -1,5 +1,6 @@
 import { defineConfig } from 'vite'
 import vue from '@vitejs/plugin-vue'
+<<<<<<< HEAD
 import path from 'path';
 // https://vitejs.dev/config/
 export default defineConfig({
@@ -10,3 +11,10 @@ export default defineConfig({
     },
   },
 })
+=======
+
+// https://vitejs.dev/config/
+export default defineConfig({
+  plugins: [vue()],
+})
+>>>>>>> dfa7f62a734889e48852b33954bd529f2d1b2509

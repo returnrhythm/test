@@ -9,9 +9,14 @@
     "preview": "vite preview"
   },
   "dependencies": {
+<<<<<<< HEAD
     "axios": "^1.6.7",
     "element-plus": "^2.5.6",
     "pinia": "^2.1.7",
+=======
+    "echarts": "^5.5.0",
+    "element-plus": "^2.5.6",
+>>>>>>> dfa7f62a734889e48852b33954bd529f2d1b2509
     "vue": "^3.4.19",
     "vue-router": "^4.3.0"
   },

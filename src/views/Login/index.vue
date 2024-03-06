@@ -1,4 +1,5 @@
 <script setup>
+<<<<<<< HEAD
 import {ref , onMounted,nextTick, watch} from 'vue'
 import {useRouter} from 'vue-router'
 import { useStore } from '@/stores/counter';
@@ -194,10 +195,19 @@ watch(repassword,(n,o) => {
     </div>
   </div>
 </div>
+=======
+
+</script>
+
+<template>
+登录
+<router-link to="/" exact-active-class="active">回退</router-link>
+>>>>>>> dfa7f62a734889e48852b33954bd529f2d1b2509
 </template>
 
 <style scoped>
 
+<<<<<<< HEAD
 @keyframes rtoregister{
     0%{
         left: 0rem;
@@ -350,3 +360,6 @@ div{
    
 }
 </style>
+=======
+</style>
+>>>>>>> dfa7f62a734889e48852b33954bd529f2d1b2509
