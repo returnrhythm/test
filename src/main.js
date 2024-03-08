@@ -5,7 +5,6 @@ import App from './App.vue'
 import ElementPlus from 'element-plus'
 import 'element-plus/dist/index.css'
 import './assets/global.css'
-<<<<<<< HEAD
 import { createPinia } from 'pinia'
 const app=createApp(App)
 
@@ -18,10 +17,7 @@ function resetHtmlFont(){
 }
 resetHtmlFont()
 window.onresize = resetHtmlFont
-=======
-const app=createApp(App)
-
+// const app=createApp(App)
 app.use(ElementPlus, { size: 'small', zIndex: 3000 })
-app.use(router)//全局挂载使用
-app.mount('#app')
->>>>>>> dfa7f62a734889e48852b33954bd529f2d1b2509
+// app.use(router)//全局挂载使用
+// app.mount('#app')

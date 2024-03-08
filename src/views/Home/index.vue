@@ -1,7 +1,6 @@
 <script setup>
 import Header from './components/header.vue'
 import Footer from './components/footer.vue'
-<<<<<<< HEAD
 import { onMounted, nextTick, ref } from 'vue'
 const headerHeight = ref(0)
  headerHeight.value = window.innerHeight * 0.08
@@ -38,20 +37,3 @@ window.addEventListener('resize',()=>{
   bottom: 0;
 }
 </style>
-=======
-</script>
-<template>
-    <div class="common-layout">
-      <el-container>
-        <el-header><Header></Header></el-header>
-        <router-view></router-view>
-        <Footer></Footer>
-      </el-container>
-    </div>
-</template>
-  
-
-<style scoped>
-
-</style>
->>>>>>> dfa7f62a734889e48852b33954bd529f2d1b2509

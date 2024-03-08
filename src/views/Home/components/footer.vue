@@ -1,5 +1,4 @@
 <script setup>
-<<<<<<< HEAD
 import {ref, watch} from 'vue'
 import {useRouter} from 'vue-router'
 import {useStore} from '@/stores/counter'
@@ -28,19 +27,11 @@ if(n === null){
 
 <template>
     <el-footer ref="footer">
-=======
-
-</script>
-
-<template>
-    <el-footer height="200px">
->>>>>>> dfa7f62a734889e48852b33954bd529f2d1b2509
         <el-row class="row-bg" justify="center">
             <el-col :span="2"><div class="grid-content ep-bg-purple" >关于我们</div></el-col>
             <el-col :span="2"><div class="grid-content ep-bg-purple-light" >商业合作</div></el-col>
             <el-col :span="2"><div class="grid-content ep-bg-purple" >联系我们</div></el-col>
         </el-row>
-<<<<<<< HEAD
         <div  @click="remove" class="btn" v-if="logsw">
             <el-tooltip
         class="box-item"
@@ -85,18 +76,5 @@ if(n === null){
     color: white;
     font-size: .111rem;
     
-=======
-    </el-footer>
-</template>
-
-<style scoped>
-.el-footer{
-    background-color: #333;
-}
-.el-row{
-    margin-top: 100px;
-    color: white;
-    font-size: 20px;
->>>>>>> dfa7f62a734889e48852b33954bd529f2d1b2509
 }
 </style>

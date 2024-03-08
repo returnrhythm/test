@@ -1,48 +1,97 @@
 <script setup>
-import {RouterLink,RouterView} from 'vue-router'
+import {useRouter, RouterLink,RouterView} from 'vue-router'
 import {onMounted, ref, nextTick} from 'vue'
+const router = useRouter();
 const a = window.innerHeight * 0.08
 onMounted(()=>{
     document.getElementById('aside').style.height = (window.innerHeight - a - 0.67 * window.innerWidth/10 ) +'px'
-})
+    document.getElementById('lmain').style.height = (window.innerHeight - a - 0.67 * window.innerWidth/10 ) +'px'
+  })
 window.addEventListener('resize',()=>{
     document.getElementById('aside').style.height = (window.innerHeight - a - 0.67 * window.innerWidth/10) + 'px'
-})
+    document.getElementById('lmain').style.height = (window.innerHeight - a - 0.67 * window.innerWidth/10 ) +'px'
+  })
+const toMyHomework = () => {
+    router.push('/person/user/myHomework')
+}
+const toUserManagement = () => {
+    router.push('/person/user/userManagement')
+}
 </script>
 <template>
-    <div class="page" id="page" @click="a">
-        <el-container>
-      <el-aside width="200px" id="aside" style="margin-right: 15px; background-color: rgb(232, 214, 214);">
-    <el-row class="tac">
-    <el-col :span="12">
-      <el-menu
-        active-text-color="#ffd04b"
-        background-color="#545c64"
-        class="el-menu-vertical-demo"
-        default-active="1"
-        text-color="#fff"
-        @open="handleOpen"
-        @close="handleClose"
-        router="true"
-      >
-        <el-menu-item style="display: flex;justify-content: center; align-items:center;" index="/person/user/myHomework" >
-          <span>我的作业</span>
-        </el-menu-item>
-      </el-menu>
-    </el-col>
-  </el-row>
-    </el-aside>
-      <el-main style="background-color: blue;">
-    <RouterView></RouterView>    
-    </el-main>
-        </el-container>
+    <div class="page" id="page">
+       <div class="aside" id="aside">
+        <div class="user"> 
+          <div style="flex: 1; display: flex;flex-wrap: wrap-reverse;"><el-avatar :size="50" :src="circleUrl"></el-avatar></div>
+          <div style="flex: 1;">name</div>
+        </div>
+        <div class="link"> 
+          <div @click="toMyHomework">我的作业</div>
+          <div @click="toUserManagement">用户管理</div>
+        </div>
+       </div>
+       <div class="main" id="lmain">
+          <RouterView style="width: 100%; height: 100%;"></RouterView>
+       </div>
     </div>
 </template>
 <style scoped>
-.link{
-    background-color: black;
+@import '@/assets/scss/main.scss';
+::-webkit-scrollbar {
+      width: 0.05rem;
+    }
+
+    /* 设置滚动槽的背景色 */
+::-webkit-scrollbar-track {
+      background-color: rgb(222, 54, 54);
+      border-radius: 0.05rem;
+    }
+    ::-webkit-scrollbar-thumb {
+      background-color: rgb(3, 3, 12);
+      border-radius: 0.05rem;
+    }
+*{
+  margin: 0;
+  padding: 0;
 }
-.el-menu-vertical-demo{
-width: 200px
+.aside{
+  width: 1.4rem;
+  display: inline-block;
+  position: absolute;
+  left: 0rem;
+}
+.user{
+  width: 1.4rem;
+  height: 30%;
+  background-color: rgb(51, 51, 51);
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+  align-items: center;
+}
+.link{
+  width: 1.4rem;
+  height: 70%;
+  background-color: rgb(51, 51, 51);
+  overflow-y: scroll;
+  overflow-x: hidden;
+}
+.link div{
+  width: 1.4rem;
+  height: 0.5rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: rgb(250, 250, 250);
+}
+.link div:hover{
+
+  background-color: rgb(0, 0, 0);
+  color: rgb(239, 255, 255);
+}
+.main{
+  width: 8.6rem;
+  position: absolute;
+  left: 1.4rem;
 }
 </style>

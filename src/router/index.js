@@ -5,16 +5,14 @@ import Home from '../views/Home/index.vue'
 import First from '../views/First/index.vue'
 import Person from '../views/Person/index.vue'
 import Data from '../views/Data/index.vue'
-<<<<<<< HEAD
 import User from '../views/Person/user/user.vue'
-import myHomework from '../views/Person/user/userpages/myHomework.vue'
-=======
+import myHomework from '../views/Person/user/myHomework.vue'
 import Data_GPA from '../views/GPA/index.vue'
 import Data_TchStu from '../views/TchStu/index.vue'
 import Data_Workrate from '../views/Workrate/index.vue'
 import Data_Workplace from '../views/Workplace/index.vue'
 import Default from '../views/SecondRouterDefault/index.vue'
->>>>>>> dfa7f62a734889e48852b33954bd529f2d1b2509
+import userManagement from '../views/Person/user/userManagement.vue'
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
   routes: [
@@ -28,7 +26,6 @@ const router = createRouter({
             },
             {
                 path:'person',
-<<<<<<< HEAD
                 component:Person,
                 children:[{
                          path:'login',
@@ -40,17 +37,20 @@ const router = createRouter({
                         children:[{
                                   path:'myHomework',
                                   component:myHomework
+                                  },
+                                  {
+                                  path:'userManagement',
+                                  component:userManagement
                                   }
                         ]
                           } 
             ]
             },
-            {
-                path:'data',
-                component:Data
-=======
-                component:Person
-            },
+            // {
+            //     path:'data',
+            //     component:Data
+            //     component:Person
+            // },
             {
                 path:'data',
                 component:Data,
@@ -76,7 +76,6 @@ const router = createRouter({
                         component:Default
                     }
                 ]
->>>>>>> dfa7f62a734889e48852b33954bd529f2d1b2509
             }
         ]
     },

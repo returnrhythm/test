@@ -1,11 +1,13 @@
 import axios from "axios";
  
 const tokenRequest = axios.create({
-    baseURL:"http://",
+    baseURL:"https://186f-117-139-220-203.ngrok-free.app",
     timeout: 60000,
     headers:{
         'Accept' : 'application/json',
-        'Content-Type': 'application/json'
+        'Content-Type': 'application/json',
+        'ngrok-skip-browser-warning': 'anyValue',
+        'token' : localStorage.getItem
     }
 })
 //请求拦截器
@@ -21,3 +23,4 @@ tokenRequest.interceptors.response.use(function(response){
     return Promise.reject(error)
 })
 
+export default tokenRequest;
