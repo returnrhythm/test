@@ -3,12 +3,18 @@ import tokenRequest from '@/utils/tokenRequest'
 import { computed, reactive,ref} from 'vue'
 import { ElMessage, ElMessageBox} from 'element-plus';
 import { onMounted } from 'vue';
-onMounted(async()=>{
-    const users = reactive([ await tokenRequest.get('/admin/user/getAllUsers').data])
-    console.log('users请求成功',users)
-})
+// onMounted(async()=>{
+//     const users = reactive([ await tokenRequest.get('/admin/user/getAllUsers').data])
+//     console.log('users请求成功',users)
+// })
 let pageNumber = ref(1);
-// const users = reactive([])
+const users = reactive([{
+    id: 1,
+    username:'112',
+    password:'123',
+    rolename:'学生',
+    nickname:'网民'
+}])
 const getIndex = (item) => users.findIndex((element) => {return element.id === item})
 const remove = async(a) =>{
     // const removeitem = await tokenRequest.get('/admin/user/deleteUser/{userId}',{
@@ -48,6 +54,7 @@ const add = () => {
         rolename:'学生',
         nickname:'你'
     })
+    linkto(pageNumber.value)
 }
 //下方数字导航
 const fnum = '<<';
@@ -61,12 +68,12 @@ const lnum = '>>';
 let all = ref(0);
 let to = ref('输入想去的页');
 // let linkStyle = ref(null)
-all.value = users.length % 8 === 0 ? Math.floor(users.length / 8) : Math.floor(users.length / 8) + 1;
    //前往指定页，将active改变为指定页
 const linkto = (num) => { 
     //    if(users.length <= 8){
     //     return 1
     //    }
+    all.value = users.length % 8 === 0 ? Math.floor(users.length / 8) : Math.floor(users.length / 8) + 1;
     num = parseInt(num)
     if(num > all.value){
         ElMessage({
