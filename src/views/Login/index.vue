@@ -168,7 +168,7 @@ watch(repassword,(n,o) => {
                 登录页
             </block>
             <block v-else>
-                注册页0
+                注册页
             </block>
         </div>
          <div class="bloc" >
@@ -181,7 +181,7 @@ watch(repassword,(n,o) => {
                 <button class="btn" @click="loginSubmit" style="opacity: 1;" >登录</button>
             </block>
             <block v-else>
-                <button class="btn" @click="registerSubmit"> 注册</button>
+                <button class="btn" @click="registerSubmit">注册</button>
             </block>
             <br>
            <block v-if="loginsw">

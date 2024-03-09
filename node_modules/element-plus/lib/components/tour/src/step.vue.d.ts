@@ -16,7 +16,7 @@ declare const _default: import("vue").DefineComponent<{
         __epPropKey: true;
     };
     showArrow: import("element-plus/es/utils").EpPropFinalized<BooleanConstructor, unknown, unknown, undefined, boolean>;
-    placement: import("element-plus/es/utils").EpPropFinalized<(new (...args: any[]) => import("@floating-ui/core").Placement & {}) | (() => import("@floating-ui/core").Placement) | ((new (...args: any[]) => import("@floating-ui/core").Placement & {}) | (() => import("@floating-ui/core").Placement))[], "top" | "bottom" | "right" | "left" | "top-start" | "top-end" | "bottom-start" | "bottom-end" | "right-start" | "right-end" | "left-start" | "left-end", unknown, string, boolean>;
+    placement: import("element-plus/es/utils").EpPropFinalized<(new (...args: any[]) => import("@floating-ui/core").Placement & {}) | (() => import("@floating-ui/core").Placement) | ((new (...args: any[]) => import("@floating-ui/core").Placement & {}) | (() => import("@floating-ui/core").Placement))[], "top" | "bottom" | "left" | "right" | "top-start" | "top-end" | "bottom-start" | "bottom-end" | "right-start" | "right-end" | "left-start" | "left-end", unknown, string, boolean>;
     mask: import("element-plus/es/utils").EpPropFinalized<(new (...args: any[]) => import("./types").TourMask & {}) | (() => import("./types").TourMask) | ((new (...args: any[]) => import("./types").TourMask & {}) | (() => import("./types").TourMask))[], unknown, unknown, undefined, boolean>;
     contentStyle: {
         readonly type: import("vue").PropType<import("vue").CSSProperties>;
@@ -38,7 +38,7 @@ declare const _default: import("vue").DefineComponent<{
     };
     scrollIntoViewOptions: import("element-plus/es/utils").EpPropFinalized<(new (...args: any[]) => (boolean | ScrollIntoViewOptions) & {}) | (() => boolean | ScrollIntoViewOptions) | ((new (...args: any[]) => (boolean | ScrollIntoViewOptions) & {}) | (() => boolean | ScrollIntoViewOptions))[], unknown, unknown, undefined, boolean>;
     type: {
-        readonly type: import("vue").PropType<import("element-plus/es/utils").EpPropMergeType<(new (...args: any[]) => ("primary" | "defalut") & {}) | (() => "primary" | "defalut") | ((new (...args: any[]) => ("primary" | "defalut") & {}) | (() => "primary" | "defalut"))[], unknown, unknown>>;
+        readonly type: import("vue").PropType<import("element-plus/es/utils").EpPropMergeType<(new (...args: any[]) => ("defalut" | "primary") & {}) | (() => "defalut" | "primary") | ((new (...args: any[]) => ("defalut" | "primary") & {}) | (() => "defalut" | "primary"))[], unknown, unknown>>;
         readonly required: false;
         readonly validator: ((val: unknown) => boolean) | undefined;
         __epPropKey: true;
@@ -61,7 +61,7 @@ declare const _default: import("vue").DefineComponent<{
             __epPropKey: true;
         };
         showArrow: import("element-plus/es/utils").EpPropFinalized<BooleanConstructor, unknown, unknown, undefined, boolean>;
-        placement: import("element-plus/es/utils").EpPropFinalized<(new (...args: any[]) => import("@floating-ui/core").Placement & {}) | (() => import("@floating-ui/core").Placement) | ((new (...args: any[]) => import("@floating-ui/core").Placement & {}) | (() => import("@floating-ui/core").Placement))[], "top" | "bottom" | "right" | "left" | "top-start" | "top-end" | "bottom-start" | "bottom-end" | "right-start" | "right-end" | "left-start" | "left-end", unknown, string, boolean>;
+        placement: import("element-plus/es/utils").EpPropFinalized<(new (...args: any[]) => import("@floating-ui/core").Placement & {}) | (() => import("@floating-ui/core").Placement) | ((new (...args: any[]) => import("@floating-ui/core").Placement & {}) | (() => import("@floating-ui/core").Placement))[], "top" | "bottom" | "left" | "right" | "top-start" | "top-end" | "bottom-start" | "bottom-end" | "right-start" | "right-end" | "left-start" | "left-end", unknown, string, boolean>;
         mask: import("element-plus/es/utils").EpPropFinalized<(new (...args: any[]) => import("./types").TourMask & {}) | (() => import("./types").TourMask) | ((new (...args: any[]) => import("./types").TourMask & {}) | (() => import("./types").TourMask))[], unknown, unknown, undefined, boolean>;
         contentStyle: {
             readonly type: import("vue").PropType<import("vue").CSSProperties>;
@@ -83,7 +83,7 @@ declare const _default: import("vue").DefineComponent<{
         };
         scrollIntoViewOptions: import("element-plus/es/utils").EpPropFinalized<(new (...args: any[]) => (boolean | ScrollIntoViewOptions) & {}) | (() => boolean | ScrollIntoViewOptions) | ((new (...args: any[]) => (boolean | ScrollIntoViewOptions) & {}) | (() => boolean | ScrollIntoViewOptions))[], unknown, unknown, undefined, boolean>;
         type: {
-            readonly type: import("vue").PropType<import("element-plus/es/utils").EpPropMergeType<(new (...args: any[]) => ("primary" | "defalut") & {}) | (() => "primary" | "defalut") | ((new (...args: any[]) => ("primary" | "defalut") & {}) | (() => "primary" | "defalut"))[], unknown, unknown>>;
+            readonly type: import("vue").PropType<import("element-plus/es/utils").EpPropMergeType<(new (...args: any[]) => ("defalut" | "primary") & {}) | (() => "defalut" | "primary") | ((new (...args: any[]) => ("defalut" | "primary") & {}) | (() => "defalut" | "primary"))[], unknown, unknown>>;
             readonly required: false;
             readonly validator: ((val: unknown) => boolean) | undefined;
             __epPropKey: true;
@@ -481,7 +481,7 @@ declare const _default: import("vue").DefineComponent<{
         __epPropKey: true;
     };
     showArrow: import("element-plus/es/utils").EpPropFinalized<BooleanConstructor, unknown, unknown, undefined, boolean>;
-    placement: import("element-plus/es/utils").EpPropFinalized<(new (...args: any[]) => import("@floating-ui/core").Placement & {}) | (() => import("@floating-ui/core").Placement) | ((new (...args: any[]) => import("@floating-ui/core").Placement & {}) | (() => import("@floating-ui/core").Placement))[], "top" | "bottom" | "right" | "left" | "top-start" | "top-end" | "bottom-start" | "bottom-end" | "right-start" | "right-end" | "left-start" | "left-end", unknown, string, boolean>;
+    placement: import("element-plus/es/utils").EpPropFinalized<(new (...args: any[]) => import("@floating-ui/core").Placement & {}) | (() => import("@floating-ui/core").Placement) | ((new (...args: any[]) => import("@floating-ui/core").Placement & {}) | (() => import("@floating-ui/core").Placement))[], "top" | "bottom" | "left" | "right" | "top-start" | "top-end" | "bottom-start" | "bottom-end" | "right-start" | "right-end" | "left-start" | "left-end", unknown, string, boolean>;
     mask: import("element-plus/es/utils").EpPropFinalized<(new (...args: any[]) => import("./types").TourMask & {}) | (() => import("./types").TourMask) | ((new (...args: any[]) => import("./types").TourMask & {}) | (() => import("./types").TourMask))[], unknown, unknown, undefined, boolean>;
     contentStyle: {
         readonly type: import("vue").PropType<import("vue").CSSProperties>;
@@ -503,7 +503,7 @@ declare const _default: import("vue").DefineComponent<{
     };
     scrollIntoViewOptions: import("element-plus/es/utils").EpPropFinalized<(new (...args: any[]) => (boolean | ScrollIntoViewOptions) & {}) | (() => boolean | ScrollIntoViewOptions) | ((new (...args: any[]) => (boolean | ScrollIntoViewOptions) & {}) | (() => boolean | ScrollIntoViewOptions))[], unknown, unknown, undefined, boolean>;
     type: {
-        readonly type: import("vue").PropType<import("element-plus/es/utils").EpPropMergeType<(new (...args: any[]) => ("primary" | "defalut") & {}) | (() => "primary" | "defalut") | ((new (...args: any[]) => ("primary" | "defalut") & {}) | (() => "primary" | "defalut"))[], unknown, unknown>>;
+        readonly type: import("vue").PropType<import("element-plus/es/utils").EpPropMergeType<(new (...args: any[]) => ("defalut" | "primary") & {}) | (() => "defalut" | "primary") | ((new (...args: any[]) => ("defalut" | "primary") & {}) | (() => "defalut" | "primary"))[], unknown, unknown>>;
         readonly required: false;
         readonly validator: ((val: unknown) => boolean) | undefined;
         __epPropKey: true;
@@ -511,7 +511,7 @@ declare const _default: import("vue").DefineComponent<{
 }>> & {
     onClose?: (() => any) | undefined;
 }, {
-    placement: import("element-plus/es/utils").EpPropMergeType<(new (...args: any[]) => import("@floating-ui/core").Placement & {}) | (() => import("@floating-ui/core").Placement) | ((new (...args: any[]) => import("@floating-ui/core").Placement & {}) | (() => import("@floating-ui/core").Placement))[], "top" | "bottom" | "right" | "left" | "top-start" | "top-end" | "bottom-start" | "bottom-end" | "right-start" | "right-end" | "left-start" | "left-end", unknown>;
+    placement: import("element-plus/es/utils").EpPropMergeType<(new (...args: any[]) => import("@floating-ui/core").Placement & {}) | (() => import("@floating-ui/core").Placement) | ((new (...args: any[]) => import("@floating-ui/core").Placement & {}) | (() => import("@floating-ui/core").Placement))[], "top" | "bottom" | "left" | "right" | "top-start" | "top-end" | "bottom-start" | "bottom-end" | "right-start" | "right-end" | "left-start" | "left-end", unknown>;
     scrollIntoViewOptions: import("element-plus/es/utils").EpPropMergeType<(new (...args: any[]) => (boolean | ScrollIntoViewOptions) & {}) | (() => boolean | ScrollIntoViewOptions) | ((new (...args: any[]) => (boolean | ScrollIntoViewOptions) & {}) | (() => boolean | ScrollIntoViewOptions))[], unknown, unknown>;
     mask: import("./types").TourMask;
     showArrow: import("element-plus/es/utils").EpPropMergeType<BooleanConstructor, unknown, unknown>;

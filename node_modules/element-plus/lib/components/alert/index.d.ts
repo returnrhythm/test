@@ -48,8 +48,8 @@ export declare const ElAlert: import("element-plus/es/utils").SFCWithInstall<imp
     iconClass: import("vue").ComputedRef<(string | {
         [x: string]: boolean;
     })[]>;
-    isBoldTitle: import("vue").ComputedRef<{
-        [x: string]: string | import("vue").Slot | undefined;
+    withDescription: import("vue").ComputedRef<{
+        'with-description': string | import("vue").Slot | undefined;
     }>;
     close: (evt: MouseEvent) => void;
     ElIcon: import("element-plus/es/utils").SFCWithInstall<import("vue").DefineComponent<{

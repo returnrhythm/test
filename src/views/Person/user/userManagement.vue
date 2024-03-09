@@ -3,18 +3,15 @@ import tokenRequest from '@/utils/tokenRequest'
 import { computed, reactive,ref} from 'vue'
 import { ElMessage, ElMessageBox} from 'element-plus';
 import { onMounted } from 'vue';
-// onMounted(async()=>{
-//     const users = reactive([ await tokenRequest.get('/admin/user/getAllUsers').data])
-//     console.log('users请求成功',users)
-// })
+onMounted(async()=>{
+    const ausers =  await tokenRequest.get('/admin/user/getAllUsers')
+    console.log('users请求成功',ausers)
+    users = ausers.data
+    console.log(users);
+    linkto(1)
+})
 let pageNumber = ref(1);
-const users = reactive([{
-    id: 1,
-    username:'112',
-    password:'123',
-    rolename:'学生',
-    nickname:'网民'
-}])
+let users = reactive([])
 const getIndex = (item) => users.findIndex((element) => {return element.id === item})
 const remove = async(a) =>{
     // const removeitem = await tokenRequest.get('/admin/user/deleteUser/{userId}',{
@@ -46,14 +43,28 @@ ElMessageBox.confirm(
       })
     })
 }
-const add = () => {
+const add = async() => {
     users.push({
-        id:0,
-        username:'111',
-        password:'143',
+        id:null,
+        username:'1000',
+        password:'1111111111111111111111111111111111111111',
         rolename:'学生',
-        nickname:'你'
+        nickname:'西柚悍匪'
     })
+    // const addItem = await tokenRequest.post('/admin/user/addUser',{
+    //     id:null,
+    //     username:'10000',
+    //     password:'Zz111111111',
+    //     rolename:'学生',
+    //     nickname:'西柚悍匪'
+    // });
+    // console.log(addItem);
+    // if(addItem.message === 'fail'){
+    //     ElMessage({
+    //     message:addItem.data,
+    //     type:'error'
+    // })
+    // }
     linkto(pageNumber.value)
 }
 //下方数字导航
@@ -70,10 +81,7 @@ let to = ref('输入想去的页');
 // let linkStyle = ref(null)
    //前往指定页，将active改变为指定页
 const linkto = (num) => { 
-    //    if(users.length <= 8){
-    //     return 1
-    //    }
-    all.value = users.length % 8 === 0 ? Math.floor(users.length / 8) : Math.floor(users.length / 8) + 1;
+    all.value = users.length === 0 ? 1 : users.length % 8 === 0 ? Math.floor(users.length / 8) : Math.floor(users.length / 8) + 1;
     num = parseInt(num)
     if(num > all.value){
         ElMessage({
@@ -81,7 +89,7 @@ const linkto = (num) => {
        })
        pageNumber.value = all.value
        num = all.value
-    }
+    } 
     if(num < 1){
         ElMessage({
         message:'数值太小，跳到第一页了哦'
@@ -113,7 +121,6 @@ const linkto = (num) => {
        lactive.value = users.slice((num-1)*8,(num-1)*8+8)
        //深拷贝
        active.value = JSON.parse(JSON.stringify(lactive.value))
-       console.log(active.value);
        
 }
 linkto(pageNumber.value)
@@ -138,14 +145,16 @@ const linkInputBlur = () => {
     <span class="page">
     <div class="head">
          <span style="flex:1">账号</span>
-         <span style="flex:1">密码</span>
+         <span style="flex:2">密码</span>
+         <span style="flex:2">邮箱</span>
          <span style="flex:1">角色</span>
          <span style="flex:1">昵称</span>
          <span style="flex:1">操作</span>
     </div>
     <div class="item" v-for="(item,index) in active" :key="index">
-         <span style="flex:1">{{ item.id}}</span>
-         <span style="flex:1">{{ item.password }}</span>
+         <span style="flex:1">{{ item.username}}</span>
+         <span style="flex:2">{{ item.password }}</span>
+         <span style="flex:2">{{ item.email }}</span>
          <span style="flex:1">{{ item.rolename }}</span>
          <span style="flex:1">{{ item.nickname }}</span>
          <span style="flex:1">
@@ -282,10 +291,11 @@ align-items: center;
     justify-content: center;
     align-items: center;
     font-size: .1rem;
-}
-.pageIndex:hover{
+    &:hover{
     background-color: rgb(51, 51, 51);
     color: rgb(250, 250, 250);
+    cursor: pointer;
+    }
 }
 .linkInput{
     width: 0.5rem;
@@ -304,5 +314,10 @@ align-items: center;
 }
 .linkBtn :active{
     background-color: rbg(51, 51, 51);
+}
+.item span{
+   width: 1rem;
+   height: 100%;
+   word-wrap: break-word;
 }
 </style>

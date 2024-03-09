@@ -1,6 +1,6 @@
 import axios from "axios"
 const primaryRequest = axios.create({
-    baseURL:"https://186f-117-139-220-203.ngrok-free.app",
+    baseURL:"https://e1b4-117-139-220-203.ngrok-free.app",
     timeout: 60000,
     headers:{
         'Accept' : 'application/json',

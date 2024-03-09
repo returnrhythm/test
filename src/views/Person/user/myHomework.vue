@@ -9,12 +9,20 @@ const homeworks = [{
 }]
 </script>
 <template>
-    <div class="head">123</div>
+    <div class="head">
+        <div class="ab"> 1</div>
+    </div>
 </template>
-<style lang="less" scoped>
+<style lang="scss" scoped>
 @import '@/assets/scss/main.scss';
+$main-Color:red;
+$main_Color:blue;
 .head{
     width: 100%;
     height: 100%;
+    background-color: $main-Color;
 }
+.ab{
+        // background-color:$primaryColor; 
+    }
 </style>

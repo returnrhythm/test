@@ -9,4 +9,5 @@ export default defineConfig({
       '@': path.resolve(__dirname, 'src'), // 设置 @ 别名为项目的 src 目录
     },
   },
+ 
 })

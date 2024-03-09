@@ -5,5 +5,6 @@ export declare const badgeProps: {
     readonly isDot: BooleanConstructor;
     readonly hidden: BooleanConstructor;
     readonly type: import("element-plus/es/utils").EpPropFinalized<StringConstructor, "success" | "warning" | "info" | "primary" | "danger", unknown, "danger", boolean>;
+    readonly showZero: import("element-plus/es/utils").EpPropFinalized<BooleanConstructor, unknown, unknown, true, boolean>;
 };
 export declare type BadgeProps = ExtractPropTypes<typeof badgeProps>;
