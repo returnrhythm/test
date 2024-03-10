@@ -6,8 +6,8 @@ const router = useRouter()
  const stores  = useStore()
  if(stores.token === null && localStorage.getItem('token') === null){
     console.log( localStorage.getItem('token'));
-   //  router.push('/person/login')
-    router.push('/person/user')
+    router.push('/person/login')
+   //  router.push('/person/user')
  }else{
     router.push('/person/user')
  }

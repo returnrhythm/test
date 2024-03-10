@@ -3,6 +3,7 @@ import tokenRequest from '@/utils/tokenRequest'
 import { computed, reactive,ref} from 'vue'
 import { ElMessage, ElMessageBox} from 'element-plus';
 import { onMounted } from 'vue';
+import { remove } from '@/utils/userManagement';
 onMounted(async()=>{
     const ausers =  await tokenRequest.get('/admin/user/getAllUsers')
     console.log('users请求成功',ausers)
@@ -13,58 +14,8 @@ onMounted(async()=>{
 let pageNumber = ref(1);
 let users = reactive([])
 const getIndex = (item) => users.findIndex((element) => {return element.id === item})
-const remove = async(a) =>{
-    // const removeitem = await tokenRequest.get('/admin/user/deleteUser/{userId}',{
-    //     userId:a
-    // })
-    // console.log(removeitem);
+const add = async(username,password,rolename,nickname) => {
     
-ElMessageBox.confirm(
-    '将会彻底删除此账号，要继续吗？',
-    '提示',
-    {
-      confirmButtonText: '确定',
-      cancelButtonText: '取消',
-      type: 'warning',
-    }
-  )
-    .then(() => {
-        users.splice(getIndex(a),1)
-        linkto(pageNumber.value)
-      ElMessage({
-        type: 'success',
-        message: '删除成功',
-      })
-    })
-    .catch(() => {
-      ElMessage({
-        type: 'info',
-        message: '删除已取消',
-      })
-    })
-}
-const add = async() => {
-    users.push({
-        id:null,
-        username:'1000',
-        password:'1111111111111111111111111111111111111111',
-        rolename:'学生',
-        nickname:'西柚悍匪'
-    })
-    // const addItem = await tokenRequest.post('/admin/user/addUser',{
-    //     id:null,
-    //     username:'10000',
-    //     password:'Zz111111111',
-    //     rolename:'学生',
-    //     nickname:'西柚悍匪'
-    // });
-    // console.log(addItem);
-    // if(addItem.message === 'fail'){
-    //     ElMessage({
-    //     message:addItem.data,
-    //     type:'error'
-    // })
-    // }
     linkto(pageNumber.value)
 }
 //下方数字导航
@@ -194,9 +145,8 @@ const linkInputBlur = () => {
   
     </span>
 </template>
-<style lang="less" scoped>
-@import '@/assets/scss/main.scss';
-@import '@fortawesome/fontawesome-free/css/all.css';
+<style lang="scss" scoped>
+// @import '@fortawesome/fontawesome-free/css/all.css';
 .page{
     overflow-y:auto;
     width: 100%;
@@ -221,7 +171,6 @@ const linkInputBlur = () => {
     color: aliceblue;
     display: flex;
     justify-content:space-evenly;
-    // justify-content:space-around;
     align-items: center;
 }
 .item{
@@ -235,9 +184,7 @@ const linkInputBlur = () => {
  
 // }
 .add{
-    display: flex;
-    justify-content:center;
-    align-items: center;
+    @include flexCenter;
     width: 10%;
     height: 100%;
     margin-left: auto;
@@ -247,6 +194,7 @@ const linkInputBlur = () => {
 }
 .footer{
     width: 100%;
+    
     height:10%;
     background-color: rgb(253, 235, 235);
     margin-top: auto;
@@ -255,9 +203,7 @@ const linkInputBlur = () => {
 .pageLink{
 width: 90%;
 height: 100%;
-display: flex;
-justify-content: center;
-align-items: center;
+@include flexCenter;
 }
 .page1{
     display: flex;
@@ -275,21 +221,17 @@ align-items: center;
     align-items: center;
 }
 .page4{
-    display: flex;
+    @include flexCenter;
     flex:3;
-    justify-content:center;
-    align-items: center;
     background-color: red;
 }
 .pageIndex{
-    display: flex;
+    @include flexCenter;
     width: 0.25rem;
     height: 0.25rem;
     margin:0.025rem;
     color: black;
     background-color: rgb(255, 255, 255);
-    justify-content: center;
-    align-items: center;
     font-size: .1rem;
     &:hover{
     background-color: rgb(51, 51, 51);
@@ -307,9 +249,7 @@ align-items: center;
     width: 0.25rem;
     height: 0.25rem;
     background-color: white;
-    display: flex;
-    justify-content: center;
-    align-items: center;
+    @include flexCenter;
     font-size: 0.07rem;
 }
 .linkBtn :active{

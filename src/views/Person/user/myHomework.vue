@@ -1,11 +1,12 @@
 <script setup>
 import tokenRequest from '@/utils/tokenRequest'
-// import { onMounted } from 'vue';
+import { onMounted } from 'vue';
 // onMounted(async()=>{
 //     const homeworks =  await tokenRequest.get('/schedule/getAllJobs')
 //     console.log('homeworks请求成功',homeworks)
 // })
 const homeworks = [{
+
 }]
 </script>
 <template>
@@ -14,15 +15,11 @@ const homeworks = [{
     </div>
 </template>
 <style lang="scss" scoped>
-@import '@/assets/scss/main.scss';
-$main-Color:red;
-$main_Color:blue;
 .head{
     width: 100%;
     height: 100%;
-    background-color: $main-Color;
+    background-color:red;
+    @include flexCenter;
+    
 }
-.ab{
-        // background-color:$primaryColor; 
-    }
 </style>

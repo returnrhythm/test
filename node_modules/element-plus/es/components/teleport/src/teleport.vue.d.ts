@@ -55,7 +55,7 @@ declare const _default: import("vue").DefineComponent<{
     readonly zIndex: import("../../../utils").EpPropFinalized<StringConstructor, unknown, unknown, "2000", boolean>;
 }>>, {
     readonly zIndex: string;
-    readonly container: string;
     readonly disabled: import("../../../utils").EpPropMergeType<BooleanConstructor, unknown, unknown>;
+    readonly container: string;
 }>;
 export default _default;

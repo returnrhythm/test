@@ -36,7 +36,7 @@ const toUserManagement = () => {
     </div>
 </template>
 <style scoped>
-@import '@/assets/scss/main.scss';
+
 ::-webkit-scrollbar {
       width: 0.05rem;
     }
