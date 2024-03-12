@@ -4,6 +4,7 @@ import {useRouter} from 'vue-router'
 import { useStore } from '@/stores/counter';
 import primaryRequest from '@/utils/primaryRequest'
 import { ElMessage } from 'element-plus'
+import { addUsers } from '../../utils/userManagement';
 const router = useRouter()
 const Store = useStore()
 const page = ref(null)
@@ -19,13 +20,24 @@ let logintext = ref();
 logintext.value = '大数据平台'
 const login = ref();
 const register = ref();
- let loginsw = ref(true)
- const account = ref("账号")
+let loginsw = ref(true)
+let loginEmailsw = ref(false)
+const account = ref("账号")
+const loginemail = ref("邮箱")
+const verification_code = ref('验证码')
 const password = ref("密码")
 const repassword = ref("确认密码")
 const accountre = ref()
+const loginemailre = ref()
+const verification_codere = ref()
 const passwordre = ref()
 const repasswordre = ref()
+const email = ref("邮箱（可不填）")
+const emailre = ref()
+const btn1 = ref()
+const btn2 = ref()
+const btn3 = ref()
+const btn4 = ref()
 //前往注册页
 const toregister = () => {
     nextTick(() => {
@@ -36,8 +48,6 @@ const toregister = () => {
         login.value.classList.add('anm');
         register.value.classList.add('anm1');
         loginsw.value = false;
-        register.value.style.background = 'rgba(0,0,0,0.5)';
-        login.value.style.background = 'rgba(255,255,255,0.5)';
     });
 };
 //前往登录页
@@ -47,8 +57,6 @@ const to = ()=>{
     login.value.classList.add('anm2')
     register.value.classList.add('anm3')
     loginsw.value = true
-    login.value.style.background = 'rgba(0,0,0,0.5)'
-    register.value.style.background = 'rgba(255,255,255,0.5)'
     repassword.value = '确认密码'
 }
 
@@ -71,6 +79,18 @@ repassword.value = ""
 repasswordre.value.type = "password"
 }
 }
+const focuson3 = ()=>{
+    if(email.value === '邮箱（可不填）')
+email.value = ""
+}
+const focuson4 = ()=>{
+    if(loginemail.value === '邮箱')
+    loginemail.value = ""
+}
+const focuson5 = ()=>{
+    if(verification_code.value === '验证码')
+verification_code.value = ""
+}
 //失焦回复输入框默认字体
 const bluron0 = ()=>{
     if(account.value.replace(/\s*/g, '')===''){
@@ -89,20 +109,25 @@ if(repassword.value.replace(/\s*/g, '')===''){
     repasswordre.value.type = 'text'
   }
 }
+const bluron3 = ()=>{
+if(email.value.replace(/\s*/g, '')===''){
+    email.value = "邮箱（可不填）"
+  }
+}
+const bluron4 = ()=>{
+if(loginemail.value.replace(/\s*/g, '')===''){
+    loginemail.value = "邮箱"
+  }
+}
+const bluron5 = ()=>{
+if(verification_code.value.replace(/\s*/g, '')===''){
+    verification_code.value = "验证码"
+  }
+}
 //注册功能密码和确认密码对比提示的实现
 //注册
 const registerSubmit = async () => {
-  const response =  await primaryRequest.post('/admin/user/addUser',{
-            id:null,
-            username:account.value,
-            password:password.value,
-            roleName:null,
-    })
-    console.log(response);
-    ElMessage({
-    message: response.data,
-    type:response.message
-  })
+    addUsers(account.value,password.value,'管理员','000','2031895172@qq.com')
 }
 //点击登录，去主页面
 const loginSubmit = async () => {
@@ -150,44 +175,78 @@ watch(repassword,(n,o) => {
          resw.value = false
     }
 })
+//去邮箱登录
+const toEmail = () => {
+    loginEmailsw.value = true
+}
+//去账号登录
+const tolog = () => {
+    loginEmailsw.value = false
+}
 </script>
 <template>
 <div class="page" style="height: 100%; height: 100px;"  ref="page"> 
   <div class="contain" :style="{top:top+'px'}">
     <div class="register" ref="register">
+        <block v-if="loginsw" ><img class="cimg" src="../../assets/photo/5.png" alt=""></block>
+        <block v-else><img class="cimg" src="../../assets/photo/6.png" alt=""></block>
         <block v-if="loginsw">
-            <button @click="toregister" class="btn" style="top: -0.05rem;">没有账号？去注册</button>
+            <button @click="toregister" class="btn" style="top: -0.05rem;" ref="btn1">没有账号？去注册</button>
         </block>
         <block v-else>
-            <button @click="to" class="btn" style="top: -0.05rem;">已注册？去登录</button>
+            <button @click="to" class="btn" style="top: -0.05rem; " ref="btn2">已注册？去登录</button>
         </block>
     </div>   
     <div class="login" ref="login">
          <div class="log">
             <block v-if="loginsw">
-                登录页
+                <span style="color: black;">
+                登录
+                </span>
             </block>
             <block v-else>
-                注册页
+                <span style="color: black;">
+                注册
+                </span>
             </block>
         </div>
          <div class="bloc" >
-            <input type="text"  v-model="account" @focus="focuson0" @blur="bluron0" class="input" ref="accountre">
+            <block v-if="loginEmailsw === false">
+            <input type="text" v-model="account" @focus="focuson0" @blur="bluron0" class="input" ref="accountre">
             <input type="text" v-model="password" @focus="focuson1" @blur="bluron1" class="input" ref="passwordre">
-         <block v-if="loginsw === false">
-            <input type="text"  v-model="repassword" @focus="focuson2" @blur="bluron2" class="input" ref="repasswordre">         
-        </block>
-            <block v-if="loginsw">      
-                <button class="btn" @click="loginSubmit" style="opacity: 1;" >登录</button>
             </block>
             <block v-else>
-                <button class="btn" @click="registerSubmit">注册</button>
+            <input type="text"  v-model="loginemail" @focus="focuson4" @blur="bluron4" class="input" ref="loginemailre">
+            <div>
+            <input type="text" v-model="verification_code" @focus="focuson5" @blur="bluron5" class="input" ref="verification_codere" style="width: 1.3rem;">
+            <button style="width: 0.6rem; background-color: white; border: 0.0001rem solid rgb(223, 223, 223); margin-left: 0.1rem; font-size: 0.1rem;">发送</button>
+            </div>
+            </block>
+         <block v-if="loginsw === false">
+            <input type="text"  v-model="repassword" @focus="focuson2" @blur="bluron2" class="input" ref="repasswordre">  
+            <input type="text" v-model="email" class="input" @focus="focuson3" @blur="bluron3" ref="emailre">       
+        </block>
+            <block v-if="loginsw">      
+                <button class="btn" @click="loginSubmit" ref="btn3">登录</button>
+            </block>
+            <block v-else>
+                <button class="btn" @click="registerSubmit" ref="btn4">注册</button>
             </block>
             <br>
            <block v-if="loginsw">
             <div class="forg">
             忘记密码？
             </div>
+            <block v-if="loginEmailsw === false">
+            <div class="forg" @click="toEmail">
+            邮箱登录
+            </div>
+            </block>
+            <block v-else>
+            <div class="forg" @click="tolog">
+            账号登录
+            </div>
+            </block>
            </block>
         </div>
         
@@ -197,13 +256,16 @@ watch(repassword,(n,o) => {
 </template>
 
 <style scoped>
-
+.cimg{
+    width: 2rem;
+    height: 2rem;
+}
 @keyframes rtoregister{
     0%{
         left: 0rem;
     }
     100%{
-        left:-3.333rem;
+        left:-3rem;
     }
 }
 @keyframes ltoregister{
@@ -211,12 +273,12 @@ watch(repassword,(n,o) => {
         left: 0rem;
     }
     100%{
-        left:3.333rem;
+        left:3rem;
     }
 }
 @keyframes rtoregisterb{
     0%{
-        left: -3.333rem;
+        left: -3rem;
     }
     100%{
         left:0rem;
@@ -224,7 +286,7 @@ watch(repassword,(n,o) => {
 }
 @keyframes ltoregisterb{
     0%{
-        left: 3.333rem;
+        left: 3rem;
     }
     100%{
         left:0rem;
@@ -251,18 +313,17 @@ watch(repassword,(n,o) => {
     animation-fill-mode: forwards;
 }
 .btn{
-    background-color: rgb(16, 53, 94);
+    background: linear-gradient(to right, rgb(53, 235, 232),rgb(54, 178, 242), rgb(62, 96, 229));
     position: relative;
     flex: 1;
-    height: .3rem;
+    height: .25rem;
     width: 2.0rem;
     font-size: 0.098rem;
     border-radius: 0.07rem;
-    color: rgb(245, 205, 245);
-    border: 0px;
+    color: rgb(254, 254, 254);
 }
 .btn:hover{
-    background-color: rgb(16, 44, 94);
+    
 }
 .line{
     width: 1.889rem; 
@@ -274,19 +335,21 @@ watch(repassword,(n,o) => {
 }
 
 .bloc{
-    flex: 3;
-    display: inline-block;
+    flex: 6;
+    display: flex;
     flex-direction: column;
+    justify-content: center;
+    align-items: center;
     /* background-color: red; */
 }
 .input{
 width: 2rem;
-height: 0.3rem;
-border: 0px solid;
+height: 0.25rem;
+border: 0.0005rem solid rgb(223, 223, 223);
 padding-left: .106rem;
-background-color: rgba(16, 53, 94,1);
+background-color: white;
 font-size: .098rem;
-color: rgb(245, 205, 245);
+color: rgb(13, 13, 13);
 margin-bottom: .196rem;
 border-radius: 0.05rem;
 }
@@ -305,48 +368,50 @@ div{
     display: flex;
     justify-content: center;
     height: 0.5rem;
-    background-color: rgba(1, 1, 1, 0);
     color: rgb(191, 193, 96);
     align-items: center;
-    border:0px rgb(73, 54, 54) solid;
     font-size: 0.2rem;
 }
 .contain{
-    width: 6.666rem;
-    height: 3.333rem;
-    background-color: rgba(94, 144, 178, 0.2);
+    width: 6rem;
+    height: 2.6rem;
     display: flex;
     color: rgba(15, 10, 3, 1);
     position: relative;
     top: 1rem;
     left: 1.665rem;
+    box-shadow: 0rem 0rem 0.04rem 0.01rem rgb(51,51,51);
 }
 .login{
+    
     position: relative;
     font-size: .111rem;
-    background-color: rgba(0, 0, 0, 0.5);
-    display: flex;
     width: 100%;
     height: 100%;
-    border:0px rgb(73, 54, 54) solid;
-    justify-content: center;
-    align-items: center;
+    /* border:0.01rem rgb(73, 54, 54) solid; */
+    display: flex;
     flex-direction: column;
+    justify-content:space-evenly;
+    align-items: center;
+  
 }
 .register{
     display: flex;
     position: relative;
     width: 100%;
-    justify-content: center;
+    height: 100%;
+    justify-content:space-evenly;
     flex-direction: column;
     align-items: center;
-    height: 100%;
     flex-wrap: wrap;
-    background-color: rgba(255, 255, 255,0.5);
+    background-color: white;
 }
 .forg{
    position: relative;
-   top: 0.3rem;
-   
+   top: 0rem;
+   padding-left: 0.3rem;
+   padding-right: 0.3rem;
+   cursor: pointer;
+   color: blue;
 }
 </style>

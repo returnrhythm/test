@@ -4,6 +4,7 @@ import { computed, reactive,ref} from 'vue'
 import { ElMessage, ElMessageBox} from 'element-plus';
 import { onMounted } from 'vue';
 import { remove } from '@/utils/userManagement';
+import { addUsers } from '../../../utils/userManagement';
 onMounted(async()=>{
     const ausers =  await tokenRequest.get('/admin/user/getAllUsers')
     console.log('users请求成功',ausers)
@@ -14,10 +15,6 @@ onMounted(async()=>{
 let pageNumber = ref(1);
 let users = reactive([])
 const getIndex = (item) => users.findIndex((element) => {return element.id === item})
-const add = async(username,password,rolename,nickname) => {
-    
-    linkto(pageNumber.value)
-}
 //下方数字导航
 const fnum = '<<';
 const ffnum = '<';
@@ -30,6 +27,27 @@ const lnum = '>>';
 let all = ref(0);
 let to = ref('输入想去的页');
 // let linkStyle = ref(null)
+const removeUser = async(a) => {
+    if(await remove(a) === true){
+    users.splice(getIndex(a),1)
+    }
+    linkto(pageNumber.value)
+}
+const addUser = async() => {
+for (let i = 0; i <= 300; i++) {
+    let test = await addUsers('zrj'+i,'Zz000000%','学生','学生'+i);
+    users.push({
+        id:null,
+        username:'zrj'+i, 
+        password:'Zz000000%',
+        rolename:'学生',
+        nickname:'学生'+i,
+        email:null,
+    })
+    linkto(pageNumber.value)
+    console.log(test);
+}
+}
    //前往指定页，将active改变为指定页
 const linkto = (num) => { 
     all.value = users.length === 0 ? 1 : users.length % 8 === 0 ? Math.floor(users.length / 8) : Math.floor(users.length / 8) + 1;
@@ -91,6 +109,7 @@ const linkInputBlur = () => {
       to.value = '输入想去的页'
     }
 }
+
 </script>
 <template>
     <span class="page">
@@ -109,7 +128,7 @@ const linkInputBlur = () => {
          <span style="flex:1">{{ item.rolename }}</span>
          <span style="flex:1">{{ item.nickname }}</span>
          <span style="flex:1">
-         <span class="delete" @click="remove(item.id)">删除</span>
+         <span class="delete" @click="removeUser(item.id)">删除</span>
         </span>
     </div>
     <div class="footer" id="foot">  
@@ -137,7 +156,7 @@ const linkInputBlur = () => {
              
             </span>
         </div>
-        <div class="add" @click="add">
+        <div class="add" @click="addUser">
             <span>添加账号 <i class="fas fa-plus-circle" style="padding-left: 0.01rem;"></i></span>
         </div>
 

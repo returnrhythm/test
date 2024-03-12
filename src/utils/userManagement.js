@@ -1,7 +1,10 @@
-import { ElMessage } from 'element-plus';
-import tokenRequest from './tokenRequest'
+import { ElMessage,ElMessageBox } from 'element-plus';
+import tokenRequest from './tokenRequest';
+
+//移除用户
 const remove = async(a) => {
-    ElMessageBox.confirm(
+    let result = null;
+    await ElMessageBox.confirm(
         '将会彻底删除此账号，要继续吗？',
         '提示',
         {
@@ -12,36 +15,39 @@ const remove = async(a) => {
       )
         .then(async() => {
             const removeitem = await tokenRequest.delete(`/admin/user/deleteUser/${a}`)
-            console.log(removeitem);
             if(removeitem.message === 'success'){
-                users.splice(getIndex(a),1)
                 ElMessage({
                   type: 'success',
                   message: '删除成功',
                           })
-                
+                result = true
             } else {
                 ElMessage({
                   type: 'error',
                   message: '删除失败',
                           })
-                linkto(pageNumber.value)
+                result = false
             }
-        })
-        .catch(() => {
-          ElMessage({
+        }).catch((error) => {
+            console.error('发生错误:', error);
+            console.log('具体错误信息:', error.message); 
+            ElMessage({
             type: 'info',
             message: '删除已取消',
           })
+          result = false
         })
+    return result
     }
-const addUsers = async(username,password,rolename,nickname) => {
+//注册，增加用户
+const addUsers = async(username=null,password=null,rolename=null,nickname=null,email='2031895172@qq.com') => {
    const addItem = await tokenRequest.post('/admin/user/addUser',{
         id:null,
         username,
         password,
         rolename,
-        nickname
+        nickname,
+        email,
     });
     console.log('添加用户结果为：',addItem);
     ElMessage({

@@ -13,6 +13,7 @@ import Data_Workrate from '../views/Workrate/index.vue'
 import Data_Workplace from '../views/Workplace/index.vue'
 import Default from '../views/SecondRouterDefault/index.vue'
 import userManagement from '../views/Person/user/userManagement.vue'
+import userPage from '../views/Person/user/userPage.vue'
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
   routes: [
@@ -28,6 +29,10 @@ const router = createRouter({
                 path:'person',
                 component:Person,
                 children:[{
+                         path:'',
+                         component:User
+                         },
+                         {
                          path:'login',
                          component:Login
                           },
@@ -35,13 +40,21 @@ const router = createRouter({
                         path:'user',
                         component:User,
                         children:[{
+                                   path:'',
+                                   component:userPage
+                                  },
+                                  {
                                   path:'myHomework',
                                   component:myHomework
                                   },
                                   {
                                   path:'userManagement',
                                   component:userManagement
-                                  }
+                                  },
+                                  {
+                                    path:'userPage',
+                                    component:userPage
+                                    }
                         ]
                           } 
             ]

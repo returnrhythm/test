@@ -17,11 +17,14 @@ const toMyHomework = () => {
 const toUserManagement = () => {
     router.push('/person/user/userManagement')
 }
+const toUser = () => {
+   router.push('/person/user/userPage')
+}
 </script>
 <template>
     <div class="page" id="page">
        <div class="aside" id="aside">
-        <div class="user"> 
+        <div class="user" @click="toUser"> 
           <div style="flex: 1; display: flex;flex-wrap: wrap-reverse;"><el-avatar :size="50" :src="circleUrl"></el-avatar></div>
           <div style="flex: 1;">name</div>
         </div>
