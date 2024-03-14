@@ -31,6 +31,7 @@ const toUser = () => {
         <div class="link"> 
           <div @click="toMyHomework">我的作业</div>
           <div @click="toUserManagement">用户管理</div>
+          <div @click="toUserManagement">角色管理</div>
         </div>
        </div>
        <div class="main" id="lmain">

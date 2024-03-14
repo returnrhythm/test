@@ -1,5 +1,5 @@
 <script setup>
-import {ref , onMounted,nextTick, watch} from 'vue'
+import {ref , onMounted,nextTick, watch, onUnmounted} from 'vue'
 import {useRouter} from 'vue-router'
 import { useStore } from '@/stores/counter';
 import primaryRequest from '@/utils/primaryRequest'
@@ -10,8 +10,17 @@ const Store = useStore()
 const page = ref(null)
 const top = window.innerHeight * 0.35
 onMounted(async()=>{
-   page.value.style.height = Store.height + 'px' 
+   page.value.style.height = Store.height + 'px'
 })
+onUnmounted(()=>{
+    console.log('asdasdas');
+})
+document.onkeydown = function(event) {
+  if (event.keyCode === 13 || event.which === 13) {
+    console.log('Enter了一次');
+      loginSubmit( loginEmailsw.value === false ? true : false );
+  }
+};
 window.addEventListener('resize',()=>{
     // console.log('是',Store.height);
     page.value.style.height = Store.height + 'px'
@@ -130,22 +139,28 @@ const registerSubmit = async () => {
     addUsers(account.value,password.value,'管理员','000','2031895172@qq.com')
 }
 //点击登录，去主页面
-const loginSubmit = async () => {
+const loginSubmit = async (key) => {
+    console.log('登录为：',key);
+if(key === true){
     try {
-        const response = await primaryRequest.post('/admin/index/login', 
+        let response = await primaryRequest.post('/admin/index/login', 
         {
             id:null,
             username:account.value,
             password:password.value,
             roleName:null
         });
-        console.log(response);
-        // const response = await primaryRequest.get('/schedule/getAllJobs')
+        console.log('账号登录结果:',response);
         if(response.message === 'success'){
             ElMessage({
               message: '登录成功',
               type: 'success',
             })
+            account.value = '账号'
+            password.value = '密码'
+            repassword.value = '确认密码'
+            loginemail.value = '邮箱'
+            verification_code.value = '验证码'
             Store.setToken(response.data)
             localStorage.setItem('token', response.data);
             router.push("/person/user");
@@ -156,14 +171,47 @@ const loginSubmit = async () => {
             })
         }
     } catch (error) {
-console.log('错误',error);
+console.log('账号登录报错',error);
 ElMessage({
               message: '登录失败，可联系管理员',
-              type: 'warning',
+              type: 'error',
             })
-// Store.setToken('1')
-// router.push("/person");
     }
+}else{
+   try{
+    let response = await primaryRequest.post('/admin/index/login_email',{
+        email:loginemail.value,
+        verification_code:verification_code.value
+    })
+    console.log('邮箱登录结果:',response);
+    if(response.message === 'success'){
+            ElMessage({
+              message: '登录成功',
+              type: 'success',
+            })
+            account.value = '账号'
+            password.value = '密码'
+            repassword.value = '确认密码'
+            loginemail.value = '邮箱'
+            verification_code.value = '验证码'
+            Store.setToken(response.data)
+            localStorage.setItem('token', response.data);
+            router.push("/person/user");
+        }else{
+            ElMessage({
+              message: response.data,
+              type: 'error',
+            })
+        }
+   }catch(error) {
+    console.log('邮箱登录报错:',error);
+    ElMessage({
+              message: '登录失败，可联系管理员',
+              type: 'error',
+            })
+   }
+}
+
 }
 //两次密码对比
 const resw = ref(null)
@@ -183,6 +231,35 @@ const toEmail = () => {
 const tolog = () => {
     loginEmailsw.value = false
 }
+//发送邮箱码
+const deadTime = ref('')
+const EmailSendCode = async() => {
+    const send = await primaryRequest.post('/admin/index/verification_code',{
+        email:loginemail.value,
+    })
+     console.log('验证码发送结果',send);
+    ElMessage({
+              message: send.message,
+              type: send.data,
+            })
+    if(true){
+        let sendBtn = document.getElementById('sendBtn')
+        deadTime.value = 60
+    sendBtn.disabled = true
+    let interval = setInterval(()=>{
+     
+     deadTime.value = deadTime.value - 1
+     if(deadTime.value === 0){
+        clearInterval(interval)
+        sendBtn.disabled = false;
+        deadTime.value = ''
+     }
+    },1000)
+    }else{
+       alert('发送失败')
+    }
+   
+}
 </script>
 <template>
 <div class="page" style="height: 100%; height: 100px;"  ref="page"> 
@@ -196,7 +273,8 @@ const tolog = () => {
         <block v-else>
             <button @click="to" class="btn" style="top: -0.05rem; " ref="btn2">已注册？去登录</button>
         </block>
-    </div>   
+    </div>
+    <div class="line"></div>
     <div class="login" ref="login">
          <div class="log">
             <block v-if="loginsw">
@@ -219,7 +297,7 @@ const tolog = () => {
             <input type="text"  v-model="loginemail" @focus="focuson4" @blur="bluron4" class="input" ref="loginemailre">
             <div>
             <input type="text" v-model="verification_code" @focus="focuson5" @blur="bluron5" class="input" ref="verification_codere" style="width: 1.3rem;">
-            <button style="width: 0.6rem; background-color: white; border: 0.0001rem solid rgb(223, 223, 223); margin-left: 0.1rem; font-size: 0.1rem;">发送</button>
+            <button style="width: 0.6rem; background-color: white; border: 0.0001rem solid rgb(223, 223, 223); margin-left: 0.1rem; font-size: 0.1rem;" @click="EmailSendCode" id="sendBtn">发送{{ deadTime }}</button>
             </div>
             </block>
          <block v-if="loginsw === false">
@@ -227,7 +305,7 @@ const tolog = () => {
             <input type="text" v-model="email" class="input" @focus="focuson3" @blur="bluron3" ref="emailre">       
         </block>
             <block v-if="loginsw">      
-                <button class="btn" @click="loginSubmit" ref="btn3">登录</button>
+                <button class="btn" @click="loginSubmit(  loginEmailsw === false ? true : false )" ref="btn3">登录</button>
             </block>
             <block v-else>
                 <button class="btn" @click="registerSubmit" ref="btn4">注册</button>
@@ -326,11 +404,11 @@ const tolog = () => {
     
 }
 .line{
-    width: 1.889rem; 
-    height: .017rem; 
-    background-color: black;
+    width: 0.001rem; 
+    height: 2rem; 
+    background-color: rgb(174, 166, 166);
     position: relative;
-    top: -0.1rem;
+    top: 0.3rem;
     left:0.07rem
 }
 
@@ -357,7 +435,6 @@ border-radius: 0.05rem;
     display: flex;
     width: 10rem;
     height: 100%;
-    background-color: #fff;
     align-items: center;
 }
 div{
@@ -409,8 +486,8 @@ div{
 .forg{
    position: relative;
    top: 0rem;
-   padding-left: 0.3rem;
-   padding-right: 0.3rem;
+   padding-left: 0.5rem;
+   padding-right: 0.5rem;
    cursor: pointer;
    color: blue;
 }
