@@ -8,7 +8,7 @@
 </template>
 
 <style scoped>
-@import url(../../assets/font/iconfont.css);
+@import url(../../assets/font/font_dataDefualt/iconfont.css);
 .tip{
     font-size: 20px;
 }

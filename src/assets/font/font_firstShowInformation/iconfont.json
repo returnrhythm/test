@@ -1,0 +1,30 @@
+{
+  "id": "3957537",
+  "name": "web",
+  "font_family": "iconfont",
+  "css_prefix_text": "icon-",
+  "description": "",
+  "glyphs": [
+    {
+      "icon_id": "3886579",
+      "name": "解决方案",
+      "font_class": "jiejuefangan",
+      "unicode": "e601",
+      "unicode_decimal": 58881
+    },
+    {
+      "icon_id": "3886589",
+      "name": "信息分析",
+      "font_class": "xinxifenxi",
+      "unicode": "e603",
+      "unicode_decimal": 58883
+    },
+    {
+      "icon_id": "3886597",
+      "name": "智能云",
+      "font_class": "zhinengyun",
+      "unicode": "e607",
+      "unicode_decimal": 58887
+    }
+  ]
+}
