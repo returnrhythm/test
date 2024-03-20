@@ -34,6 +34,7 @@ const pushLoginPath=()=>{
               type: 'error',
             })
     router.push('/person/login')
+    // router.push('/person')
   }
 }
 </script>
