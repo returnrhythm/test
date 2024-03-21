@@ -17,6 +17,7 @@ import DataWorkplace from '../views/Workplace/index.vue'
 import Default from '../views/SecondRouterDefault/index.vue'
 import userManagement from '../views/Person/user/userManagement.vue'
 import userPage from '../views/Person/user/userPage.vue'
+import roleManage from '../views/Person/user/roleManage.vue'
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
   routes: [
@@ -57,7 +58,11 @@ const router = createRouter({
                                   {
                                     path:'userPage',
                                     component:userPage
-                                    }
+                                  },
+                                  {
+                                    path:'rolePage',
+                                    component:roleManage
+                                  }
                         ]
                           } 
             ]

@@ -40,7 +40,7 @@ const remove = async(a) => {
     return result
     }
 //注册，增加用户
-const addUsers = async(username=null,password=null,rolename=null,nickname=null,email='2031895172@qq.com') => {
+const addUsers = async(username=null,password=null,rolename=null,nickname='未设置',email='2031895172@qq.com') => {
    const addItem = await tokenRequest.post('/admin/user/addUser',{
         id:null,
         username,
@@ -56,4 +56,35 @@ const addUsers = async(username=null,password=null,rolename=null,nickname=null,e
              })
     return addItem.message === 'error' ? false : true
     }
-    export {remove , addUsers}
+//增加角色
+const addRole = async(roleName) => {
+  
+  try{
+    const addrole= await tokenRequest.post('/admin/role/addRole',null,{
+      params:{
+        roleName,
+      }
+      
+     });
+     console.log('添加角色结果为：',addrole);
+     ElMessage({
+         type:addrole.message,
+         message:addrole.data
+              })
+    return addrole.message === 'success' ? true : false
+  }catch(error){
+    console.log(roleName,typeof(roleName));
+       console.log('添加角色报错',error);
+  }
+   
+    }
+const removeRole = async(id) => {
+   try{
+    let deleteRole = tokenRequest.delete(`/admin/role/deleteRole/${id}`)
+   return deleteRole.message === 'success' ? false : true
+   }catch(error){ 
+    console.log('删除角色报错',error);
+    return false   
+   }
+}
+    export {remove , addUsers , removeRole , addRole}

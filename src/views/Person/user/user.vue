@@ -20,6 +20,9 @@ const toUserManagement = () => {
 const toUser = () => {
    router.push('/person/user/userPage')
 }
+const toRolePage = () =>{
+  router.push('/person/user/rolePage')
+}
 </script>
 <template>
     <div class="page" id="page">
@@ -29,9 +32,9 @@ const toUser = () => {
           <div style="flex: 1;">name</div>
         </div>
         <div class="link"> 
-          <div @click="toMyHomework">我的作业</div>
+          <div @click="toMyHomework">作业管理</div>
           <div @click="toUserManagement">用户管理</div>
-          <div @click="toUserManagement">角色管理</div>
+          <div @click="toRolePage">角色管理</div>
         </div>
        </div>
        <div class="main" id="lmain">

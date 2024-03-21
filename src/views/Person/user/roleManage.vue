@@ -1,107 +1,57 @@
 <script setup>
-import tokenRequest from '@/utils/tokenRequest'
-import { computed, reactive,ref} from 'vue'
-import { ElMessage, ElMessageBox} from 'element-plus';
-import { onMounted ,defineExpose} from 'vue';
-import { remove ,addUsers} from '@/utils/userManagement';
-const password = ref('请输入密码')
-const username = ref('请输入账号')
-const passwordRef = ref()
-const usernameRef = ref()
-const passwordFocus = () => {
-    if(password.value === '请输入密码'){
-        password.value = ''
-    } 
-} 
-const usernameFocus = () => {
-    if(username.value === '请输入账号'){
-        username.value = ''
+import tokenRequest from '../../../utils/tokenRequest';
+import {onMounted,ref} from 'vue';
+import { removeRole,addRole } from '../../../utils/userManagement.js';
+import { ElMessage,ElMessageBox } from 'element-plus';
+let roles = []
+const dialogVisible = ref(false)
+const roleName = ref('请输入想要添加的角色')
+const roleNameFocus = () => {
+    if(roleName.value === '请输入想要添加的角色'){
+        roleName.value = ''
     }
 }
-const usernameBlurs = () => {
-    if(username.value === ''){
-        username.value = '请输入账号'
+const roleNameBlurs = () => {
+    if(roleName.value === ''){
+        roleName.value = '请输入想要添加的角色'
     }
 }
-const passwordBlurs = () => {
-    if(password.value === ''){
-        password.value = '请输入密码'
+const addRoles = (name) => {
+    if( addRole(name) ){
+        roles.push({id:null, roleName:name})
+        linkto(pageNumber.value)
+        dialogVisible.value = false
+    }else{
+        ElMessage({
+            message:'请求失败，可能是网络问题哦！',
+            type:'error'
+        })
     }
 }
-let roles = ref([])
-let select = ref('学生') 
 onMounted(async()=>{
-    const load = ref(true)
-    try{
-        roles.value = await tokenRequest.get('/admin/role/getAllRoles')
-        roles = roles.value.data
-        console.log(roles);
-        const ausers =  await tokenRequest.get('/admin/user/getAllUsers')
-        console.log('users请求成功',ausers)
-        load.value = false
-        users = ausers.data
-        console.log(users);
-        linkto(1)
-    }catch(error) {
-        console.log('users请求失败',error);
-        load.value = false
-    }
- 
-  
+try{
+    roles = await tokenRequest.get('/admin/role/getAllRoles')
+    roles = roles.data
+    linkto(1)
+    console.log('roles请求成功',roles);
+}catch(error){
+    console.log(error);}
 })
-
-let pageNumber = ref(1);
-let users = reactive([])
-const getIndex = (item) => users.findIndex((element) => {return element.id === item})
-//下方数字导航
 const fnum = '<<';
 const ffnum = '<';
 const num1 = '...';
 let active = ref(null)
 let lactive = ref(null)
+const num2= 0;
 const llnum = '>';
 const lnum = '>>';
 let all = ref(0);
+let pageNumber = ref(1);
 let to = ref('输入想去的页');
-const removeUser = async(a) => {
-    if(await remove(a) === true){
-    users.splice(getIndex(a),1)
-    }
-    linkto(pageNumber.value)
-}
-const addUser = async() => {
-    if(username.value === '请输入账号'){
-        ElMessage({
-        message:'请输入账号哦！',
-        type:'warning'
-    })
-        return
-    }
-    if(password.value === '请输入密码'){
-        ElMessage({
-        message:'请输入密码哦！',
-        type:'warning'
-    })  
-        return
-    }
-    let test = await addUsers(username.value,password.value,select.value,);
-     if(test){
-        users.push({
-        id:null,
-        username:username.value, 
-        password:password.value,
-        rolename: select.value,
-        email:null,
-    })
-    password.value = ''
-    username.value = ''
-    }
-    linkto(pageNumber.value)
-    select.value = '学生'
-}
+const getIndex = (item) => roles.findIndex((element) => {return element.id === item})
    //前往指定页，将active改变为指定页
-const linkto = (num) => { 
-    all.value = users.length === 0 ? 1 : users.length % 8 === 0 ? Math.floor(users.length / 8) : Math.floor(users.length / 8) + 1;
+   const linkto = (num) => { 
+    all.value = roles.length === 0 ? 1 : roles.length % 8 === 0 ? Math.floor(roles.length / 8) : Math.floor(roles.length / 8) + 1;
     num = parseInt(num)
     if(num > all.value){
         ElMessage({
@@ -138,12 +88,12 @@ const linkto = (num) => {
     }
     pageNumber.value = num
        //获取浅拷贝数组
-       lactive.value = users.slice((num-1)*8,(num-1)*8+8)
+       lactive.value = roles.slice((num-1)*8,(num-1)*8+8)
        //深拷贝
        active.value = JSON.parse(JSON.stringify(lactive.value))
        
 }
-
+linkto(pageNumber.value)
   //到最后和到最前
 const tofnum = () => {
     linkto(1)
@@ -152,35 +102,59 @@ const tolnum = () => {
     linkto(all.value)
 }
 const linkInputFoucus = () => {
-          to.value = ''
-    
+          to.value = ''  
 }
 const linkInputBlur = () => {
     if(to.value === ''){
       to.value = '输入想去的页'
     }
 }
-linkto(pageNumber.value)
-const dialogVisible = ref(false);
+const removeRoles = async(id) => {
+
+    await ElMessageBox.confirm(
+        '将会彻底删除此角色，要继续吗？',
+        '提示',
+        {
+          confirmButtonText: '确定',
+          cancelButtonText: '取消',
+          type: 'warning',
+        }
+      )
+        .then(async() => {
+            if( await removeRole(id) ){
+        ElMessage({
+        message:'删除成功',
+        type:'success'
+        })
+    roles.splice(getIndex(id),1)
+            }else{
+    ElMessage({
+        message:'删除失败了。可能是网络问题',
+        type:'error'
+    })
+            }
+        }).catch((error) => {
+            console.error('发生错误:', error);
+            console.log('具体错误信息:', error.message); 
+            ElMessage({
+            type: 'info',
+            message: '删除已取消',
+          })
+        })
+    linkto(pageNumber.value)
+}
+
 </script>
 <template>
     <span class="page" v-loading="load">
     <div class="head">
-         <span style="flex:1">账号</span>
-         <span style="flex:2">密码</span>
-         <span style="flex:2">邮箱</span>
-         <span style="flex:1">角色</span>
-         <span style="flex:1">昵称</span>
+         <span style="flex:2">角色名称</span>
          <span style="flex:1">操作</span>
     </div>
     <div class="item" v-for="(item,index) in active" :key="index">
-         <span style="flex:1">{{ item.username}}</span>
-         <span style="flex:2">{{ item.password }}</span>
-         <span style="flex:2">{{ item.email }}</span>
-         <span style="flex:1">{{ item.rolename }}</span>
-         <span style="flex:1">{{ item.nickname }}</span>
+         <span style="flex:2">{{ item.roleName }}</span>
          <span style="flex:1">
-         <span class="delete" @click="removeUser(item.id)">删除</span>
+         <span class="delete" @click="removeRoles(item.id)">删除</span>
         </span>
     </div>
     <div class="footer" id="foot">  
@@ -209,32 +183,25 @@ const dialogVisible = ref(false);
             </span>
         </div>
         <div class="add" @click="dialogVisible = true">
-            <span>添加账号 <i class="fas fa-plus-circle" style="padding-left: 0.01rem;"></i></span>
+            <span>添加角色<i class="fas fa-plus-circle" style="padding-left: 0.01rem;"></i></span>
         </div>
-
     </div>
-  
+
     </span>
     <el-dialog
     v-model="dialogVisible"
-    title="增加用户"
+    title="增加角色"
     width="2.5rem"
     :before-close="handleClose"
   >
     <span style="display: flex; flex-direction: column; align-items: center; ">
-       <span class="cen" style="text-align: left;">
-       <div>账号: <input type="text" class="input" v-model="username" @focus="usernameFocus" @blur="usernameBlurs" ref="usernameRef"></div>
-       <div>密码: <input type="text" class="input" v-model="password" @focus="passwordFocus" @blur="passwordBlurs" ref="passwordRef"></div>
-       <div style="position: relative; top: -0.1rem;"><span>角色:</span> <el-select style="width: 50%; top: -0.11rem;"  v-model="select" placeholder="Select" >
-            <el-option v-for="(role, index) in roles" :key="index" :label="role.roleName" :value="role.roleName"></el-option>
-                </el-select>
-      </div>
-    </span>
+      <span>角色名字: <input class="inpt" type="text" v-model="roleName" @focus="roleNameFocus" @blur="roleNameBlurs">
+      </span>
     </span>
     <template #footer>
       <div class="dialog-footer">
         <el-button @click="dialogVisible = false">取消</el-button>
-        <el-button type="primary" @click="addUser">确定</el-button>
+        <el-button type="primary" @click="addRoles(roleName)">确定</el-button>
       </div>
     </template>
   </el-dialog>
@@ -242,6 +209,7 @@ const dialogVisible = ref(false);
 <style lang="scss" scoped>
 // @import '@fortawesome/fontawesome-free/css/all.css';
 .page{
+    font-size: 0.1rem;
     overflow-y:auto;
     width: 100%;
     height:100%;
@@ -250,7 +218,6 @@ const dialogVisible = ref(false);
     justify-content:first baseline;
     align-items: center;
     flex-wrap: wrap;
-    font-size: 0.1rem;
 }
 .delete{
     color: blue;
@@ -355,29 +322,9 @@ height: 100%;
    height: 100%;
    word-wrap: break-word;
 }
-.ipt{
+.inpt{
     width: 1rem;
-    height: 1rem;
-}
-.messagebox{
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    background-color: red;
-}
-.alertform{
-    width: 1rem;
-    display: flex;
-    align-items: center;
-    justify-content:flex-end;
-}
-.cen div{
-    margin-top: 0.2rem;
-}
-.input{
-    width: 80%;
-    height: 0.15rem;
-    border: 0.0001rem solid rgb(189, 202, 206) ;
-    color: rgb(96, 98, 102);
+    height: 0.2rem;
+    border: 0.00001rem solid rgb(225, 211, 211);
 }
 </style>

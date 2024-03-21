@@ -7,6 +7,7 @@ import { ElMessage } from 'element-plus'
 import { addUsers } from '../../utils/userManagement';
 const router = useRouter()
 const Store = useStore()
+
 const page = ref(null)
 const top = window.innerHeight * 0.35
 onMounted(async()=>{
@@ -25,6 +26,7 @@ window.addEventListener('resize',()=>{
     // console.log('是',Store.height);
     page.value.style.height = Store.height + 'px'
 })
+
 let logintext = ref();
 logintext.value = '大数据平台'
 const login = ref();
@@ -134,14 +136,11 @@ if(verification_code.value.replace(/\s*/g, '')===''){
   }
 }
 //注册功能密码和确认密码对比提示的实现
-//注册
-const registerSubmit = async () => {
-    addUsers(account.value,password.value,'管理员','000','2031895172@qq.com')
-}
+
 //点击登录，去主页面
 const loginSubmit = async (key) => {
     console.log('登录为：',key);
-if(key === true){
+        if(key === true){
     try {
         let response = await primaryRequest.post('/admin/index/login', 
         {
@@ -214,15 +213,58 @@ ElMessage({
 
 }
 //两次密码对比
-const resw = ref(null)
+let repeat = ref(false)
+const margin = ref('.200rem')
 watch(repassword,(n,o) => {
+    console.log(n);
+    if(n === '确认密码'){
+        repeat.value = false
+        margin.value = '0.2rem'
+        return
+    }
     if(n === password.value ){
          console.log('是');
+          margin.value = '0.2rem'
+         repeat.value = false
     }else{
+         repeat.value = true
+         margin.value = '0rem'
          console.log('否');
-         resw.value = false
     }
 })
+//注册
+const registerSubmit = async () => {
+    if(account.value === '账号' || account.value === ''){
+        ElMessage({
+            message:'请输入账号哦！',
+            type:'warning'
+        })
+        return
+    }
+    if(password.value === '密码' || password.value === ''){
+        ElMessage({
+            message:'请输入密码哦！',
+            type:'warning'
+        })
+        return
+    }
+    if(repassword.value === '确认密码' || repassword.value === ''){
+        ElMessage({
+            message:'请输入确认密码哦！',
+            type:'warning'
+        })
+        return
+    }
+    if(repeat.value === false){
+    addUsers(account.value,password.value,'管理员','000','2031895172@qq.com')
+    }else{
+    ElMessage({
+        message:'两次密码不一致！',
+        type:'error'
+    })
+    return
+    }
+}
 //去邮箱登录
 const toEmail = () => {
     loginEmailsw.value = true
@@ -260,6 +302,7 @@ const EmailSendCode = async() => {
     }
    
 }
+
 </script>
 <template>
 <div class="page" style="height: 100%; height: 100px;"  ref="page"> 
@@ -301,7 +344,12 @@ const EmailSendCode = async() => {
             </div>
             </block>
          <block v-if="loginsw === false">
-            <input type="text"  v-model="repassword" @focus="focuson2" @blur="bluron2" class="input" ref="repasswordre">  
+            <span style="display: flex; flex-direction: column; ">
+            <input type="text"  v-model="repassword" @focus="focuson2" @blur="bluron2" class="input" ref="repasswordre" :style="{marginBottom:margin}">  
+            <block v-if="repeat">
+                <el-alert style="width: 1.5rem; height: 0.2rem; font-size: 0.2rem; margin-top: 0;" title="两次输入的密码不一样哦" type="warning" :closable="false" />
+            </block>  
+        </span>
             <input type="text" v-model="email" class="input" @focus="focuson3" @blur="bluron3" ref="emailre">       
         </block>
             <block v-if="loginsw">      
@@ -428,7 +476,8 @@ padding-left: .106rem;
 background-color: white;
 font-size: .098rem;
 color: rgb(13, 13, 13);
-margin-bottom: .196rem;
+margin-bottom: .2rem;
+
 border-radius: 0.05rem;
 }
 .page{
