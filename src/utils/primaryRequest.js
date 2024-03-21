@@ -1,6 +1,6 @@
 import axios from "axios"
 const primaryRequest = axios.create({
-    baseURL:"https://30f1-39-144-138-193.ngrok-free.app",
+    baseURL:"http://localhost:8080",
     
     timeout: 60000,
     headers:{

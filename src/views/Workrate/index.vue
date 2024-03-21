@@ -7,7 +7,7 @@ onMounted(()=>{
 const myChart = echarts.init(workrate.value);
 myChart.setOption({
   title: {
-    text: '就业率'
+    text: '就业率(%)'
   },
   xAxis: {
     data: ['2019毕业生', '2020毕业生', '2021毕业生', '2022毕业生', '2023毕业生']

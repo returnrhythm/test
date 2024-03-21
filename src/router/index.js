@@ -7,10 +7,13 @@ import Person from '../views/Person/index.vue'
 import Data from '../views/Data/index.vue'
 import User from '../views/Person/user/user.vue'
 import myHomework from '../views/Person/user/myHomework.vue'
-import Data_GPA from '../views/GPA/index.vue'
-import Data_TchStu from '../views/TchStu/index.vue'
-import Data_Workrate from '../views/Workrate/index.vue'
-import Data_Workplace from '../views/Workplace/index.vue'
+import DataGPA from '../views/GPA/index.vue'
+import DataGPACourse from '../views/GPA/components/course.vue'
+import DataGPAMajor from '../views/GPA/components/major.vue'
+import DataGPAMethod from '../views/GPA/components/method.vue'
+import DataTchStu from '../views/TchStu/index.vue'
+import DataWorkrate from '../views/Workrate/index.vue'
+import DataWorkplace from '../views/Workplace/index.vue'
 import Default from '../views/SecondRouterDefault/index.vue'
 import userManagement from '../views/Person/user/userManagement.vue'
 import userPage from '../views/Person/user/userPage.vue'
@@ -59,30 +62,42 @@ const router = createRouter({
                           } 
             ]
             },
-            // {
-            //     path:'data',
-            //     component:Data
-            //     component:Person
-            // },
             {
                 path:'data',
                 component:Data,
                 children:[
                     {
-                        path:'data_GPA',
-                        component:Data_GPA
+                        path:'GPA',
+                        component:DataGPA,
+                        children:[
+                        {
+                            path:'',
+                            component:DataGPACourse
+                        },
+                        {
+                            path:'course',
+                            component:DataGPACourse
+                        },
+                        {
+                            path:'method',
+                            component:DataGPAMethod
+                        },
+                        {
+                            path:'major',
+                            component:DataGPAMajor
+                        }]
                     },
                     {
-                        path:'data_tchstu',
-                        component:Data_TchStu
+                        path:'datatchstu',
+                        component:DataTchStu
                     },
                     {
-                        path:'data_workrate',
-                        component:Data_Workrate
+                        path:'dataworkrate',
+                        component:DataWorkrate
                     },
                     {
-                        path:'data_workplace',
-                        component:Data_Workplace
+                        path:'dataworkplace',
+                        component:DataWorkplace
                     },
                     {
                         path:'',
