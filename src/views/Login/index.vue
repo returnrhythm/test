@@ -10,18 +10,20 @@ const Store = useStore()
 
 const page = ref(null)
 const top = window.innerHeight * 0.35
-onMounted(async()=>{
-   page.value.style.height = Store.height + 'px'
-})
-onUnmounted(()=>{
-    console.log('asdasdas');
-})
-document.onkeydown = function(event) {
+const keyupEnter = function(event) {
   if (event.keyCode === 13 || event.which === 13) {
     console.log('Enter了一次');
       loginSubmit( loginEmailsw.value === false ? true : false );
   }
 };
+onMounted(async()=>{
+   page.value.style.height = Store.height + 'px'
+   window.addEventListener('keyup',keyupEnter)
+})
+onUnmounted(()=>{
+    window.removeEventListener('keyup', keyupEnter);
+})
+
 window.addEventListener('resize',()=>{
     // console.log('是',Store.height);
     page.value.style.height = Store.height + 'px'
@@ -142,6 +144,20 @@ const loginSubmit = async (key) => {
     console.log('登录为：',key);
         if(key === true){
     try {
+        if(account.value === '账号' || account.value === ''){
+            ElMessage({
+              message: '请输入账号',
+              type: 'warning',
+            })
+          return
+        }
+        if(password.value === '密码' || password.value === ''){
+            ElMessage({
+              message: '请输入密码',
+              type: 'warning',
+            })
+          return
+        }
         let response = await primaryRequest.post('/admin/index/login', 
         {
             id:null,
@@ -298,7 +314,6 @@ const EmailSendCode = async() => {
      }
     },1000)
     }else{
-       alert('发送失败')
     }
    
 }

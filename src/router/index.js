@@ -7,6 +7,10 @@ import Person from '../views/Person/index.vue'
 import Data from '../views/Data/index.vue'
 import User from '../views/Person/user/user.vue'
 import myHomework from '../views/Person/user/myHomework.vue'
+import DataStuMsg from '../views/StuMsg/index.vue'
+import DataStuGPA from '../views/StuData/components/StuGPA.vue'
+import DataStuQuality from '../views/StuData/components/StuQuality.vue'
+import DataGPATrend from '../views/StuData/components/GPATrend.vue'
 import DataGPA from '../views/GPA/index.vue'
 import DataGPACourse from '../views/GPA/components/course.vue'
 import DataGPAMajor from '../views/GPA/components/major.vue'
@@ -93,15 +97,31 @@ const router = createRouter({
                         }]
                     },
                     {
-                        path:'datatchstu',
+                        path:'stuGPA',
+                        component:DataStuGPA
+                    },
+                    {
+                        path:'GPAtrend',
+                        component:DataGPATrend
+                    },
+                    {
+                        path:'stuquality',
+                        component:DataStuQuality
+                    },
+                    {
+                        path:'stumsg',
+                        component:DataStuMsg
+                    },
+                    {
+                        path:'tchstu',
                         component:DataTchStu
                     },
                     {
-                        path:'dataworkrate',
+                        path:'workrate',
                         component:DataWorkrate
                     },
                     {
-                        path:'dataworkplace',
+                        path:'workplace',
                         component:DataWorkplace
                     },
                     {
