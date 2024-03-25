@@ -27,7 +27,7 @@ const pushDataPath=()=>{
 const pushLoginPath=()=>{
   const res=ifToken();
   if(res){
-    router.push('/person')
+    router.push('/person/user')
   }else{
     ElMessage({
               message: '请先登录',

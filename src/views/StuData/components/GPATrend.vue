@@ -6,15 +6,18 @@ onMounted(()=>{
 const myChart = echarts.init(workrate.value);
 myChart.setOption({
   title: {
-    text: '就业率(%)'
+    text: '绩点趋势'
   },
   xAxis: {
-    data: ['2019毕业生', '2020毕业生', '2021毕业生', '2022毕业生', '2023毕业生']
+    data: ['2022秋季学期','2023春季学期','2023秋季学期']
   },
-  yAxis: {},
+  yAxis: {
+    max:5,
+    min:0
+  },
   series: [
     {
-      data: [90, 91, 92, 93, 94],
+      data: [3.8,3.2,2.8],
       type: 'line',
       label: {
         show: true,
