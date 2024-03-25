@@ -4,6 +4,10 @@ import { computed, reactive,ref} from 'vue'
 import { ElMessage, ElMessageBox} from 'element-plus';
 import { onMounted ,defineExpose} from 'vue';
 import { remove ,addUsers} from '@/utils/userManagement';
+import router from '@/router/index.js'
+console.log('十万大山',router.options.routes[0].children);
+//查找渲染路由
+
 const password = ref('请输入密码')
 const username = ref('请输入账号')
 const passwordRef = ref()
@@ -85,6 +89,7 @@ const addUser = async() => {
         return
     }
     let test = await addUsers(username.value,password.value,select.value,);
+    console.log(select.value);
      if(test){
         users.push({
         id:null,
@@ -95,9 +100,11 @@ const addUser = async() => {
     })
     password.value = ''
     username.value = ''
+    dialogVisible.value = false
     }
     linkto(pageNumber.value)
     select.value = '学生'
+
 }
    //前往指定页，将active改变为指定页
 const linkto = (num) => { 

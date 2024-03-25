@@ -1,9 +1,22 @@
 <script setup>
-import {useRouter, RouterLink,RouterView} from 'vue-router'
 import {onMounted, ref, nextTick} from 'vue'
+import {useRouter, RouterLink,RouterView} from 'vue-router'
+import { getRoute } from '@/utils/routerManagement'
+import tokenRequest from '@/utils/tokenRequest';
 const router = useRouter();
+
+// console.log(route);
+let route = ref([])
 const a = window.innerHeight * 0.08
-onMounted(()=>{
+onMounted( async()=>{
+let userInfo = await tokenRequest.get('/admin/index/user')
+let route1 = await tokenRequest.get(`/admin/role/permissions/${userInfo.data.id}`)
+console.log(route1);
+ route.value = route1.data
+console.log(route.value);
+route.value = getRoute(route.value,'用户管理')
+route.value = route.value.filter((e)=>{return e.permissionCode !== ''})
+console.log(route.value);
     document.getElementById('aside').style.height = (window.innerHeight - a - 0.67 * window.innerWidth/10 ) +'px'
     document.getElementById('lmain').style.height = (window.innerHeight - a - 0.67 * window.innerWidth/10 ) +'px'
   })
@@ -11,18 +24,7 @@ window.addEventListener('resize',()=>{
     document.getElementById('aside').style.height = (window.innerHeight - a - 0.67 * window.innerWidth/10) + 'px'
     document.getElementById('lmain').style.height = (window.innerHeight - a - 0.67 * window.innerWidth/10 ) +'px'
   })
-const toMyHomework = () => {
-    router.push('/person/user/myHomework')
-}
-const toUserManagement = () => {
-    router.push('/person/user/userManagement')
-}
-const toUser = () => {
-   router.push('/person/user/userPage')
-}
-const toRolePage = () =>{
-  router.push('/person/user/rolePage')
-}
+
 </script>
 <template>
     <div class="page" id="page">
@@ -32,9 +34,9 @@ const toRolePage = () =>{
           <div style="flex: 1;">name</div>
         </div>
         <div class="link"> 
-          <div @click="toMyHomework">作业管理</div>
-          <div @click="toUserManagement">用户管理</div>
-          <div @click="toRolePage">角色管理</div>
+          <template v-for="(item, index) in route" :key="index">
+              <RouterLink :to="`/person/user/${item.permissionCode}`" class="routerLink">{{item.permissionName}}</RouterLink>               
+         </template>
         </div>
        </div>
        <div class="main" id="lmain">
@@ -43,7 +45,9 @@ const toRolePage = () =>{
     </div>
 </template>
 <style scoped>
-
+.router-link-active{
+  background-color: rgb(46, 42, 42);
+}
 ::-webkit-scrollbar {
       width: 0.05rem;
     }
@@ -83,7 +87,7 @@ const toRolePage = () =>{
   overflow-y: scroll;
   overflow-x: hidden;
 }
-.link div{
+.routerLink{
   width: 1.4rem;
   height: 0.5rem;
   display: flex;

@@ -41,6 +41,7 @@ const remove = async(a) => {
     }
 //注册，增加用户
 const addUsers = async(username=null,password=null,rolename=null,nickname='未设置',email='2031895172@qq.com') => {
+   
    const addItem = await tokenRequest.post('/admin/user/addUser',{
         id:null,
         username,
@@ -54,7 +55,7 @@ const addUsers = async(username=null,password=null,rolename=null,nickname='未�
         type:addItem.message,
         message:addItem.data
              })
-    return addItem.message === 'error' ? false : true
+    return addItem.message !== 'success' ? false : true
     }
 //增加角色
 const addRole = async(roleName) => {

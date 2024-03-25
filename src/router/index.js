@@ -1,5 +1,6 @@
 // import Vue from 'vue'
 import { createRouter, createWebHistory } from 'vue-router'
+import tokenRequest from '../utils/tokenRequest'
 import Login from '../views/Login/index.vue'
 import Home from '../views/Home/index.vue'
 import First from '../views/First/index.vue'
@@ -15,6 +16,7 @@ import Default from '../views/SecondRouterDefault/index.vue'
 import userManagement from '../views/Person/user/userManagement.vue'
 import userPage from '../views/Person/user/userPage.vue'
 import roleManage from '../views/Person/user/roleManage.vue'
+import test from '../components/HelloWorld.vue'
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
   routes: [
@@ -97,12 +99,6 @@ const router = createRouter({
             }
         ]
     },
-    {
-        path:'/login',
-        component: Login 
-    },
-    
   ]
 })
- 
 export default router
