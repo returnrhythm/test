@@ -1,7 +1,6 @@
 // 获取路由,rou传入路由树，str传入期待找到的path值，会返回拥有该path值的根目录
 const getRoute = (rou , str) => {
     let result
-    console.log(rou.length);
     if (!rou || rou.length === 0) {
             // console.error("Invalid input array");
             return [];

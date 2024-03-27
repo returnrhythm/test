@@ -7,9 +7,12 @@ const router = useRouter();
 
 // console.log(route);
 let route = ref([])
+let nickName = ref()
 const a = window.innerHeight * 0.08
 onMounted( async()=>{
 let userInfo = await tokenRequest.get('/admin/index/user')
+console.log(userInfo);
+nickName.value = userInfo.data.nickname
 let route1 = await tokenRequest.get(`/admin/role/permissions/${userInfo.data.id}`)
 console.log(route1);
  route.value = route1.data
@@ -31,7 +34,7 @@ window.addEventListener('resize',()=>{
        <div class="aside" id="aside">
         <div class="user" @click="toUser"> 
           <div style="flex: 1; display: flex;flex-wrap: wrap-reverse;"><el-avatar :size="50" :src="circleUrl"></el-avatar></div>
-          <div style="flex: 1;">name</div>
+          <div style="flex: 1;">{{ nickName }}</div>
         </div>
         <div class="link"> 
           <template v-for="(item, index) in route" :key="index">

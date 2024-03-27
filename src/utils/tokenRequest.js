@@ -1,13 +1,14 @@
 import axios from "axios";
  
 const tokenRequest = axios.create({
-    baseURL:"http://localhost:8080",
+    baseURL:"http://127.0.0.1:8080",
     timeout: 60000,
     headers:{
         'Accept' : 'application/json',
         'Content-Type': 'application/json',
         'ngrok-skip-browser-warning': 'anyValue',
-        'token' : localStorage.getItem('token')
+        'token' : localStorage.getItem('token'),
+        'Authorization': localStorage.getItem('token')
     }
 })
 //请求拦截器
