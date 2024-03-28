@@ -3,8 +3,9 @@ import tokenRequest from '../../../utils/tokenRequest';
 import {onMounted,ref} from 'vue';
 import { removeRole,addRole } from '../../../utils/userManagement.js';
 import { ElMessage,ElMessageBox } from 'element-plus';
-let roles = []
+let roles = ref([])
 const dialogVisible = ref(false)
+const permissionIdswitch = ref(false)
 const roleName = ref('请输入想要添加的角色')
 const roleNameFocus = () => {
     if(roleName.value === '请输入想要添加的角色'){
@@ -16,9 +17,12 @@ const roleNameBlurs = () => {
         roleName.value = '请输入想要添加的角色'
     }
 }
-const addRoles = (name) => {
-    if( addRole(name) ){
-        roles.push({id:null, roleName:name})
+const addRoles = async( name) => {
+    if(await addRole(name) ){
+        roles.value.push({id:null, roleName:name})
+        let role = await tokenRequest.get('/admin/role/getAllRoles')
+        role = role.data
+        roles.value = role
         linkto(pageNumber.value)
         dialogVisible.value = false
     }else{
@@ -30,10 +34,10 @@ const addRoles = (name) => {
 }
 onMounted(async()=>{
 try{
-    roles = await tokenRequest.get('/admin/role/getAllRoles')
-    roles = roles.data
+    roles.value = await tokenRequest.get('/admin/role/getAllRoles')
+    roles.value = roles.value.data
     linkto(1)
-    console.log('roles请求成功',roles);
+    console.log('roles请求成功',roles.value);
 }catch(error){
     console.log(error);}
 })
@@ -48,10 +52,10 @@ const lnum = '>>';
 let all = ref(0);
 let pageNumber = ref(1);
 let to = ref('输入想去的页');
-const getIndex = (item) => roles.findIndex((element) => {return element.id === item})
+const getIndex = (item) => roles.value.findIndex((element) => {return element.id === item})
    //前往指定页，将active改变为指定页
    const linkto = (num) => { 
-    all.value = roles.length === 0 ? 1 : roles.length % 8 === 0 ? Math.floor(roles.length / 8) : Math.floor(roles.length / 8) + 1;
+    all.value = roles.value.length === 0 ? 1 : roles.value.length % 8 === 0 ? Math.floor(roles.value.length / 8) : Math.floor(roles.value.length / 8) + 1;
     num = parseInt(num)
     if(num > all.value){
         ElMessage({
@@ -88,7 +92,7 @@ const getIndex = (item) => roles.findIndex((element) => {return element.id === i
     }
     pageNumber.value = num
        //获取浅拷贝数组
-       lactive.value = roles.slice((num-1)*8,(num-1)*8+8)
+       lactive.value = roles.value.slice((num-1)*8,(num-1)*8+8)
        //深拷贝
        active.value = JSON.parse(JSON.stringify(lactive.value))
        
@@ -126,7 +130,7 @@ const removeRoles = async(id) => {
         message:'删除成功',
         type:'success'
         })
-    roles.splice(getIndex(id),1)
+    roles.value.splice(getIndex(id),1)
             }else{
     ElMessage({
         message:'删除失败了。可能是网络问题',
@@ -143,17 +147,97 @@ const removeRoles = async(id) => {
         })
     linkto(pageNumber.value)
 }
+//为角色分配权限
+const props = { multiple: true }
+const permissions = ref([
+  {
+    value: 1,
+    label: '学生权限',
+    children: [
+      {
+        value: 9,
+        label: '我的作业',
+      },
+    ],
+  },
+  {
+    value: 2,
+    label: '教师权限',
+    children: [
+      {
+        value: 13,
+        label: '绩点分析',
+      },
+      {
+        value: 14,
+        label: '师生比',
+      },
+      {
+        value: 15,
+        label: '就业率',
+      },
+      {
+        value: 16,
+        label: '就业去向',
+      },
+    ],
+  },
+  {
+    value: 3,
+    label: '管理权限',
+    children: [
+      {
+        value: 12,
+        label: '角色管理',
+      },
+      {
+        value: 10,
+        label: '用户管理',
+      },
+    ],
+  },
 
+])
+const select = ref([])
+const selects = ref([])
+const results = (arrays) => {
+  arrays.map((e)=>{
+    selects.value.push(e[1])
+  })
+}
+const id = ref()
+const addPermissionSwitch = (roleId) => {
+  permissionIdswitch.value = true
+  id.value = roleId
+}
+const addPermission = async() => {
+    console.log(selects.value,id.value);
+    results(select.value)
+    let k = 0
+    selects.value.map(async(e)=>{
+      k++;
+      let addPermissions = await tokenRequest.post('/admin/role/assignPermissionsToRole',{
+        roleId:id.value,
+        permissionIds:e
+    })
+    ElMessage({
+      message:addPermissions.data,
+      type: addPermissions.message
+    })
+    })
+    permissionIdswitch.value = false
+}
 </script>
 <template>
     <span class="page" v-loading="load">
     <div class="head">
-         <span style="flex:2">角色名称</span>
-         <span style="flex:1">操作</span>
+         <span style="flex:3">角色名称</span>
+         <span style="flex:2">操作</span>
     </div>
     <div class="item" v-for="(item,index) in active" :key="index">
-         <span style="flex:2">{{ item.roleName }}</span>
-         <span style="flex:1">
+         <span style="flex:3">{{ item.roleName }}</span>
+         <span style="flex:2;display: flex;justify-content:space-evenly;">
+         <span class="delete" @click="addPermissionSwitch(item.id)">分配权限</span>
          <span class="delete" @click="removeRoles(item.id)">删除</span>
         </span>
     </div>
@@ -202,6 +286,33 @@ const removeRoles = async(id) => {
       <div class="dialog-footer">
         <el-button @click="dialogVisible = false">取消</el-button>
         <el-button type="primary" @click="addRoles(roleName)">确定</el-button>
+      </div>
+    </template>
+  </el-dialog>
+  
+
+  <el-dialog
+    v-model="permissionIdswitch"
+    title="分配权限"
+    width="2.5rem"
+    :before-close="handleClose"
+  >
+    <span style="display: flex; flex-direction: column; align-items: center; ">
+       <span class="cen" style="text-align: left;">
+        <el-cascader
+        v-model="select"
+      :options="permissions"
+      :props="props"
+      collapse-tags
+      collapse-tags-tooltip
+      clearable
+    />
+    </span>
+    </span>
+    <template #footer>
+      <div class="dialog-footer">
+        <el-button @click="permissionIdswitch = false">取消</el-button>
+        <el-button type="primary" @click="addPermission()">确定</el-button>
       </div>
     </template>
   </el-dialog>

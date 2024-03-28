@@ -1,5 +1,9 @@
 // import Vue from 'vue'
-import { createRouter, createWebHistory } from 'vue-router'
+//基础权限 1 2 3 4 5 6 7 8 11
+//学生权限  9
+//教师权限  13 14 15 16 17
+//管理员权限    10 12  
+  import { createRouter, createWebHistory } from 'vue-router'
 import tokenRequest from '../utils/tokenRequest'
 import Login from '../views/Login/index.vue'
 import Home from '../views/Home/index.vue'
