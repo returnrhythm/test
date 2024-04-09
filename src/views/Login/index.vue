@@ -7,8 +7,10 @@ import { ElMessage } from 'element-plus'
 import { addUsers } from '../../utils/userManagement';
 const router = useRouter()
 const Store = useStore()
-
 const page = ref(null)
+if(localStorage.getItem('token')){
+    router.push("/person/user");
+}
 const top = window.innerHeight * 0.35
 const keyupEnter = function(event) {
   if (event.keyCode === 13 || event.which === 13) {
@@ -171,14 +173,15 @@ const loginSubmit = async (key) => {
               message: '登录成功',
               type: 'success',
             })
+            Store.setToken(response.data)
+            localStorage.setItem('token', response.data);
             account.value = '账号'
             password.value = '密码'
             repassword.value = '确认密码'
             loginemail.value = '邮箱'
             verification_code.value = '验证码'
-            Store.setToken(response.data)
-            localStorage.setItem('token', response.data);
-            router.push("/person/user");
+            window.location.reload();
+
         }else{
             ElMessage({
               message: response.data,

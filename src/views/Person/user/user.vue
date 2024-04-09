@@ -3,6 +3,7 @@ import {onMounted, ref, nextTick} from 'vue'
 import {useRouter, RouterLink,RouterView} from 'vue-router'
 import { getRoute } from '@/utils/routerManagement'
 import tokenRequest from '@/utils/tokenRequest';
+import axios from 'axios';
 const router = useRouter();
 
 // console.log(route);
@@ -10,24 +11,36 @@ let route = ref([])
 let nickName = ref()
 const a = window.innerHeight * 0.08
 onMounted( async()=>{
-let userInfo = await tokenRequest.get('/admin/index/user')
-console.log(userInfo);
-nickName.value = userInfo.data.nickname
-let route1 = await tokenRequest.get(`/admin/role/permissions/${userInfo.data.id}`)
-console.log(route1);
- route.value = route1.data
-console.log(route.value);
-route.value = getRoute(route.value,'用户管理')
-route.value = route.value.filter((e)=>{return e.permissionCode !== ''})
-console.log(route.value);
-    document.getElementById('aside').style.height = (window.innerHeight - a - 0.67 * window.innerWidth/10 ) +'px'
-    document.getElementById('lmain').style.height = (window.innerHeight - a - 0.67 * window.innerWidth/10 ) +'px'
+  document.getElementById('aside').style.height = (window.innerHeight - a - 0.67 * window.innerWidth/10 ) +'px'
+  document.getElementById('lmain').style.height = (window.innerHeight - a - 0.67 * window.innerWidth/10 ) +'px'
+  await getInfo()
   })
 window.addEventListener('resize',()=>{
     document.getElementById('aside').style.height = (window.innerHeight - a - 0.67 * window.innerWidth/10) + 'px'
     document.getElementById('lmain').style.height = (window.innerHeight - a - 0.67 * window.innerWidth/10 ) +'px'
   })
-
+  let i = 0;
+let getInfo = async () => {
+  console.log(localStorage.getItem('token'));
+  await axios({
+    url:'http://127.0.0.1:8080/admin/index/user',
+    headers:{
+      "Authorization":localStorage.getItem('token')
+    }
+   }).then(async (e)=>{
+    console.log(e);
+      let userInfo = e.data
+      console.log(userInfo);
+      nickName.value = userInfo.data.nickname;
+      let route1 = await tokenRequest.get(`/admin/role/permissions/${userInfo.data.id}`);
+      console.log(route1);
+      route.value = route1.data;
+      console.log(route.value);
+      route.value = getRoute(route.value,'用户管理');
+      route.value = route.value.filter((e)=>{return e.permissionCode !== ''});
+      console.log(route.value);
+   })
+}
 </script>
 <template>
     <div class="page" id="page">
