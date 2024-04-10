@@ -1,18 +1,22 @@
 <script lang="ts" setup>
+import { ref, onMounted } from 'vue'
 import tokenRequest from '../../../utils/tokenRequest'
 //拿到角色
-//目前不晓得为啥子拿不到rolename 学生老师还不能根据角色自行切换
-const fn=async ()=>{
-  const response=await tokenRequest.get('/admin/index/user')
-  console.log(response)
+const ifTch = ref(false);
+const ifStu = ref(false);
+const ifAdmin = ref(false);
+// 获取角色并更新响应式变量
+const getRole = async () => {
+  let response = await tokenRequest.get('/admin/index/user');
+  let role = response.data.rolename;
+  ifTch.value = role === 'teacher';
+  ifStu.value = role === 'student';
+  ifAdmin.value = role === '管理员';
 }
-fn()
-const getRole=()=>{
-  return 'teacher'
-}
-const role=getRole()
-const ifStu=role==='student'?true:false
-const ifTch=role==='teacher'?true:false
+
+onMounted(() => {
+  getRole();
+});
 </script>
 <template>
     <el-row class="tac">
@@ -31,7 +35,7 @@ const ifTch=role==='teacher'?true:false
         </el-sub-menu>
         <router-link to="/data/tchstu">
           <el-menu-item index="2">
-            <span>师生比</span>
+            <span>生师比</span>
           </el-menu-item>
         </router-link>
           <router-link to="/data/workrate">
@@ -64,6 +68,18 @@ const ifTch=role==='teacher'?true:false
           <router-link to="/data/stuquality">
             <el-menu-item index="3" >
             <span>综测查询</span>
+          </el-menu-item>
+          </router-link>
+          </el-menu>
+          <el-menu class="el-menu-vertical-demo"  v-if= "ifAdmin">
+        <router-link to="/data/mysql">
+          <el-menu-item index="1">
+            <span>mysql操作</span>
+          </el-menu-item>
+        </router-link>
+          <router-link to="/data/clickhouse">
+            <el-menu-item index="2" >
+            <span>clickhouse操作</span>
           </el-menu-item>
           </router-link>
           </el-menu>

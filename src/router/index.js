@@ -23,6 +23,8 @@ import DataGPAMethod from '../views/GPA/components/method.vue'
 import DataTchStu from '../views/TchStu/index.vue'
 import DataWorkrate from '../views/Workrate/index.vue'
 import DataWorkplace from '../views/Workplace/index.vue'
+import Mysql from '../views/HandleDatabase/mysql.vue'
+import Clickhouse from '../views/HandleDatabase/clickhouse.vue'
 import Default from '../views/SecondRouterDefault/index.vue'
 import userManagement from '../views/Person/user/userManagement.vue'
 import userPage from '../views/Person/user/userPage.vue'
@@ -129,6 +131,14 @@ const router = createRouter({
                     {
                         path:'workplace',
                         component:DataWorkplace
+                    },
+                    {
+                        path:'mysql',
+                        component:Mysql
+                    },
+                    {
+                        path:'clickhouse',
+                        component:Clickhouse
                     },
                     {
                         path:'',
