@@ -1,6 +1,9 @@
 <script setup>
 import tokenRequest from '@/utils/tokenRequest'
 import { onMounted } from 'vue';
+onMounted(()=>{
+    tokenRequest.get('')
+})
 </script>
 <template>
     <div class="head">
