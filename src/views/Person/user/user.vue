@@ -41,18 +41,22 @@ let getInfo = async () => {
       console.log(route.value);
    })
 }
+let toUser = () => {
+router.push('userPage')
+}
 </script>
 <template>
     <div class="page" id="page">
        <div class="aside" id="aside">
         <div class="user" @click="toUser"> 
-          <div style="flex: 1; display: flex;flex-wrap: wrap-reverse;"><el-avatar :size="50" :src="circleUrl"></el-avatar></div>
-          <div style="flex: 1;">{{ nickName }}</div>
+          <div style="flex: 2; display: flex;flex-wrap: wrap-reverse;"><img style="width: 0.5rem; height: 0.5rem;border-radius: 50%;" src="@/assets/photo/7.png" alt=""></div>
+          <div style="flex: 1; margin-top: 0.05rem;">{{ nickName }}</div>
         </div>
         <div class="link"> 
           <template v-for="(item, index) in route" :key="index">
               <RouterLink :to="`/person/user/${item.permissionCode}`" class="routerLink">{{item.permissionName}}</RouterLink>               
          </template>
+       
         </div>
        </div>
        <div class="main" id="lmain">
@@ -65,16 +69,16 @@ let getInfo = async () => {
   background-color: rgb(46, 42, 42);
 }
 ::-webkit-scrollbar {
-      width: 0.05rem;
+      width: 0.06rem;
     }
 
     /* 设置滚动槽的背景色 */
 ::-webkit-scrollbar-track {
-      background-color: rgb(222, 54, 54);
+      background-color: rgb(51, 51, 51);
       border-radius: 0.05rem;
     }
     ::-webkit-scrollbar-thumb {
-      background-color: rgb(3, 3, 12);
+      background-color: rgb(193, 193, 193);
       border-radius: 0.05rem;
     }
 *{

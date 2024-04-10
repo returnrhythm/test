@@ -30,6 +30,7 @@ import userManagement from '../views/Person/user/userManagement.vue'
 import userPage from '../views/Person/user/userPage.vue'
 import roleManage from '../views/Person/user/roleManage.vue'
 import test from '../components/HelloWorld.vue'
+import courseSearch from '../views/Person/courses/courseSearch.vue'
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
   routes: [
@@ -74,6 +75,10 @@ const router = createRouter({
                                   {
                                     path:'rolePage',
                                     component:roleManage
+                                  },
+                                  {
+                                    path:'courseSearch',
+                                    component:courseSearch
                                   }
                         ]
                           } 

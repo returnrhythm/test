@@ -5,6 +5,7 @@ import { useStore } from '@/stores/counter';
 import primaryRequest from '@/utils/primaryRequest'
 import { ElMessage } from 'element-plus'
 import { addUsers } from '../../utils/userManagement';
+import tokenRequest from '../../utils/tokenRequest';
 const router = useRouter()
 const Store = useStore()
 const page = ref(null)
@@ -42,6 +43,8 @@ const loginemail = ref("邮箱")
 const verification_code = ref('验证码')
 const password = ref("密码")
 const repassword = ref("确认密码")
+const studentId = ref("请输入学号")
+const studentIdre = ref()
 const accountre = ref()
 const loginemailre = ref()
 const verification_codere = ref()
@@ -63,6 +66,11 @@ const toregister = () => {
         login.value.classList.add('anm');
         register.value.classList.add('anm1');
         loginsw.value = false;
+        let lists = document.querySelectorAll('.input')
+        lists.forEach((e) => {
+            console.log(e);
+            e.style.height = 0.2 + 'rem'
+        })
     });
 };
 //前往登录页
@@ -73,6 +81,11 @@ const to = ()=>{
     register.value.classList.add('anm3')
     loginsw.value = true
     repassword.value = '确认密码'
+    let lists = document.querySelectorAll('.input')
+        lists.forEach((e) => {
+            console.log(e);
+            e.style.height = 0.25 + 'rem'
+        })
 }
 
 //登录注册功能数据
@@ -105,6 +118,10 @@ const focuson4 = ()=>{
 const focuson5 = ()=>{
     if(verification_code.value === '验证码')
 verification_code.value = ""
+}
+const focuson6 = ()=>{
+    if(studentId.value === '请输入学号' || studentId.value === '请输入教工号')
+    studentId.value = ""
 }
 //失焦回复输入框默认字体
 const bluron0 = ()=>{
@@ -139,8 +156,15 @@ if(verification_code.value.replace(/\s*/g, '')===''){
     verification_code.value = "验证码"
   }
 }
-//注册功能密码和确认密码对比提示的实现
-
+const bluron6 = ()=>{
+    if(studentId.value.replace(/\s*/g, '')===''){
+    if(StuTeasw.value === true){
+        studentId.value = "请输入学号"
+    }else{
+        studentId.value = "请输入教工号"
+    }
+  }
+}
 //点击登录，去主页面
 const loginSubmit = async (key) => {
     console.log('登录为：',key);
@@ -274,6 +298,44 @@ const registerSubmit = async () => {
         })
         return
     }
+    if(studentId.value === '请输入学号' || studentId.value === '请输入教工号' || repassword.value === ''){
+        if(stuteavalue.value === '学生'){
+            ElMessage({
+            message:'请输入学号哦！',
+            type:'warning'
+        })
+        }else{
+            ElMessage({
+            message:'请输入教工号哦！',
+            type:'warning'
+        })
+        }
+        return
+    }
+    let result = true
+    if(stuteavalue.value === '学生'){
+        result = await tokenRequest.post('/admin/user/verification_stu',{
+            studentId,
+        })
+    }else{
+        result = await tokenRequest.post('/admin/user/verification_teacher',{
+            teacherId:studentId
+        })
+    }
+    if(result === false){
+        if(stuteavalue.value === '学生'){
+            ElMessage({
+            message:'请检查学号！没有这个学号！',
+            type:'error'
+        })
+        }else{
+            ElMessage({
+            message:'请检查教工号！没有这个教工号！',
+            type:'error'
+        })
+        }
+        return
+    }
     if(repeat.value === false){
     addUsers(account.value,password.value,'管理员','000','2031895172@qq.com')
     }else{
@@ -320,7 +382,23 @@ const EmailSendCode = async() => {
     }
    
 }
-
+//设置教工号和学号切换
+let StuTeasw = ref(true)
+let stutea = ref([{
+          value: '学生',
+          label: '学生'
+        }, {
+          value: '教师',
+          label: '教师'
+        }])
+        let stuteavalue = ref('学生')
+watch(stuteavalue,(n,o)=>{
+    if(n === '学生'){
+        studentId.value = '请输入学号'
+    }else{
+        studentId.value = '请输入教工号'
+    }
+})
 </script>
 <template>
 <div class="page" style="height: 100%; height: 100px;"  ref="page"> 
@@ -363,18 +441,30 @@ const EmailSendCode = async() => {
             </block>
          <block v-if="loginsw === false">
             <span style="display: flex; flex-direction: column; ">
-            <input type="text"  v-model="repassword" @focus="focuson2" @blur="bluron2" class="input" ref="repasswordre" :style="{marginBottom:margin}">  
+            <input type="text"  v-model="repassword" @focus="focuson2" @blur="bluron2" class="input" ref="repasswordre" :style="{marginBottom:margin}" style="height:0.2rem">  
             <block v-if="repeat">
                 <el-alert style="width: 1.5rem; height: 0.2rem; font-size: 0.2rem; margin-top: 0;" title="两次输入的密码不一样哦" type="warning" :closable="false" />
             </block>  
+            <span style="display: flex; justify-content: center;align-items:center; height: 0.2rem;">
+              <input type="text" v-model="studentId" class="input" style="height:0.2rem; width: 1.2rem; margin: 0;" @focus="focuson6" @blur="bluron6" ref="studentIdre">
+              <el-select v-model="stuteavalue" placeholder="请选择"  class="select">
+                      <el-option
+                       v-for="item in stutea"
+                       :key="item.value"
+                       :label="item.label"
+                       :value="item.value">
+                       </el-option>
+              </el-select>
+              </span>
         </span>
-            <input type="text" v-model="email" class="input" @focus="focuson3" @blur="bluron3" ref="emailre">       
+            <input type="text" v-model="email" class="input" style="margin-top: 0.2rem;" @focus="focuson3" @blur="bluron3" ref="emailre"> 
+             
         </block>
             <block v-if="loginsw">      
                 <button class="btn" @click="loginSubmit(  loginEmailsw === false ? true : false )" ref="btn3">登录</button>
             </block>
             <block v-else>
-                <button class="btn" @click="registerSubmit" ref="btn4">注册</button>
+                <button class="btn" style="bottom: 0.1rem;" @click="registerSubmit" ref="btn4">注册</button>
             </block>
             <br>
            <block v-if="loginsw">
@@ -400,6 +490,9 @@ const EmailSendCode = async() => {
 </template>
 
 <style scoped>
+.select{
+    width: 0.8rem;
+}
 .cimg{
     width: 2rem;
     height: 2rem;
@@ -495,7 +588,6 @@ background-color: white;
 font-size: .098rem;
 color: rgb(13, 13, 13);
 margin-bottom: .2rem;
-
 border-radius: 0.05rem;
 }
 .page{
