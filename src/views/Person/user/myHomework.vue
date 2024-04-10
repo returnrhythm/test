@@ -7,7 +7,7 @@ onMounted(()=>{
 </script>
 <template>
     <div class="head">
-        <div class="ab"> 空的 </div>
+        <div class="ab"> 还没有作业哦~~ </div>
     </div>
 </template>
 <style lang="scss" scoped>

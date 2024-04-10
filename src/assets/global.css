@@ -4,3 +4,7 @@ html, body, #app{
     margin: 0; 
     padding: 0;
 }
+.el-select-dropdown .el-select-dropdown__item {
+    height: 0.4rem !important;
+    line-height: 0.4rem !important;
+  }
